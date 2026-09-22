@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { HashLab } from './components/labs/HashLab';
 import { BlockLab } from './components/labs/BlockLab';
 import { BlockchainLab } from './components/labs/BlockchainLab';
+import { LessonRunner } from './components/education/LessonRunner';
 
 export type LabTab = 'hash' | 'block' | 'blockchain' | 'lessons';
 
@@ -112,6 +113,7 @@ export default function App() {
         {activeTab === 'hash' && <HashLab />}
         {activeTab === 'block' && <BlockLab />}
         {activeTab === 'blockchain' && <BlockchainLab />}
+        {activeTab === 'lessons' && <LessonRunner onNavigateTab={setActiveTab} />}
       </main>
 
       {/* Educational Disclaimer Footer */}
