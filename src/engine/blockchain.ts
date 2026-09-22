@@ -78,9 +78,14 @@ export function validateChain(chain: Block[]): ChainValidationResult {
       }
     } else {
       const prevBlock = chain[i - 1];
+      const prevStatus = statuses[i - 1];
+
       if (block.previousHash !== prevBlock.hash) {
         isLinkValid = false;
         reason = `Block #${i} previousHash does not match Block #${i - 1}'s current hash.`;
+      } else if (!prevStatus.isValid) {
+        isLinkValid = false;
+        reason = `Predecessor Block #${i - 1} is invalid; chain linkage is broken.`;
       }
     }
 
