@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Block, BlockHeader } from '../../engine/types';
 import { computeBlockHash, validateBlock, mineBlockStep } from '../../engine/block';
-import { Pickaxe, CheckCircle2, AlertTriangle, RefreshCw, Cpu } from 'lucide-react';
+import { Pickaxe, CheckCircle2, AlertTriangle, RefreshCw, Cpu, XCircle } from 'lucide-react';
 
 export const BlockLab: React.FC = () => {
   const [index, setIndex] = useState<number>(1);
@@ -30,6 +30,32 @@ export const BlockLab: React.FC = () => {
   const [isMining, setIsMining] = useState<boolean>(false);
   const [miningAttempts, setMiningAttempts] = useState<number>(0);
 
+  // Stable refs for lifecycle management and preventing overlapping/orphaned intervals
+  const miningIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isMountedRef = useRef<boolean>(true);
+
+  const stopMining = useCallback(() => {
+    if (miningIntervalRef.current !== null) {
+      clearInterval(miningIntervalRef.current);
+      miningIntervalRef.current = null;
+    }
+    if (isMountedRef.current) {
+      setIsMining(false);
+    }
+  }, []);
+
+  // Ensure timer is cleanly terminated when component unmounts
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (miningIntervalRef.current !== null) {
+        clearInterval(miningIntervalRef.current);
+        miningIntervalRef.current = null;
+      }
+    };
+  }, []);
+
   const currentHeader: BlockHeader = useMemo(
     () => ({
       index,
@@ -56,15 +82,20 @@ export const BlockLab: React.FC = () => {
 
   const validation = useMemo(() => validateBlock(currentBlock), [currentBlock]);
 
-  // Interactive step-based mining loop (runs without freezing browser UI)
+  // Interactive step-based mining loop (lifecycle-safe, non-blocking)
   const handleMine = () => {
+    // Clear any existing timer to prevent overlapping loops
+    stopMining();
+
     setIsMining(true);
     setMiningAttempts(0);
 
     let currentNonce = 0;
     let totalAttempts = 0;
 
-    const interval = setInterval(() => {
+    miningIntervalRef.current = setInterval(() => {
+      if (!isMountedRef.current) return;
+
       const result = mineBlockStep(
         { ...currentHeader, nonce: currentNonce },
         currentNonce,
@@ -72,20 +103,22 @@ export const BlockLab: React.FC = () => {
       );
 
       totalAttempts += result.attempts;
+
+      if (!isMountedRef.current) return;
       setMiningAttempts(totalAttempts);
       setNonce(result.newNonce);
 
       if (result.mined) {
-        clearInterval(interval);
-        setIsMining(false);
-        setNonce(result.newNonce);
-        setStoredHash(result.currentHash);
+        stopMining();
+        if (isMountedRef.current) {
+          setNonce(result.newNonce);
+          setStoredHash(result.currentHash);
+        }
       } else {
         currentNonce = result.newNonce;
         // Safety bail-out after 1M iterations in educational demo
         if (totalAttempts > 1_000_000) {
-          clearInterval(interval);
-          setIsMining(false);
+          stopMining();
         }
       }
     }, 16);
@@ -190,8 +223,20 @@ export const BlockLab: React.FC = () => {
                 </>
               )}
             </button>
+            {isMining && (
+              <button
+                id="cancel-mining-btn"
+                onClick={stopMining}
+                className="btn btn-danger"
+                style={{ fontSize: '0.8125rem', padding: '6px 12px' }}
+                title="Stop mining search"
+              >
+                <XCircle size={14} /> Cancel Mining
+              </button>
+            )}
             <button
               onClick={handleSyncHash}
+              disabled={isMining}
               className="btn btn-secondary"
               style={{ fontSize: '0.8125rem', padding: '6px 12px' }}
               title="Set stored hash to current computed hash without finding proof of work"
