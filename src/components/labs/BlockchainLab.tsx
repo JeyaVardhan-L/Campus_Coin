@@ -18,6 +18,7 @@ import {
   AlertOctagon,
   ShieldAlert,
   ArrowRight,
+  Info,
 } from 'lucide-react';
 
 export const BlockchainLab: React.FC = () => {
@@ -204,6 +205,36 @@ export const BlockchainLab: React.FC = () => {
             {validation.firstInvalidIndex}&apos;s data or nonce was altered, its hash
             changed. Every downstream block that linked to it now fails the previous hash
             check!
+          </div>
+        </div>
+      )}
+
+      {/* Educational Repair Context Callout */}
+      {!validation.isValid && (
+        <div
+          id="repair-context-callout"
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '12px',
+            padding: '12px 16px',
+            background: 'rgba(0, 240, 255, 0.04)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: 'var(--radius-md)',
+            fontSize: '0.8125rem',
+            color: 'var(--text-secondary)',
+            lineHeight: 1.5,
+          }}
+        >
+          <Info size={18} className="text-cyan" style={{ flexShrink: 0, marginTop: '2px' }} />
+          <div>
+            <strong style={{ color: 'var(--text-primary)' }}>
+              Educational Simulation Note on Chain Repair:
+            </strong>{' '}
+            This repair works rapidly because this laboratory gives you 100% of the
+            simulated mining power and there are no competing honest nodes. In a
+            distributed network, an attacker would need to rebuild modified history
+            while competing against the honest network&apos;s accumulated proof-of-work.
           </div>
         </div>
       )}

@@ -46,9 +46,12 @@ For a chain of blocks $[B_0, B_1, \dots, B_n]$ to be considered valid by the net
    For every block $B_i$, its stored `hash` must exactly match the recomputation of its header:
    $$B_i.\text{hash} = \text{computeBlockHash}(B_i)$$
 
-3. **Difficulty Target**:
+3. **Difficulty Target & Consensus Enforcement**:
    For every block $B_i$, its hash must begin with at least $B_i.\text{difficulty}$ zero characters:
    $$B_i.\text{hash}.\text{startsWith}(\text{"0"} \times B_i.\text{difficulty}) = \text{true}$$
+   Furthermore, when validating against network consensus rules with an expected network difficulty $D_{\text{expected}}$, every block must satisfy:
+   $$B_i.\text{difficulty} = D_{\text{expected}}$$
+   This prevents malicious blocks from declaring an artificially lowered difficulty to spoof valid proof-of-work.
 
 4. **Cryptographic Parent Linkage**:
    For every block $B_i$ ($i > 0$), its `previousHash` field must match the current hash of the preceding block:
@@ -77,6 +80,9 @@ To make the chain appear valid again, an attacker must:
 5. Repeat for all subsequent blocks up to the current tip.
 
 This mechanical simulation demonstrates why Proof-of-Work protects history: the deeper a block is buried under subsequent blocks, the more cumulative energy and work are required to rewrite it.
+
+### Educational Simulation Context
+In this educational laboratory, re-mining a broken chain succeeds quickly because the user has 100% of the simulated mining hash rate and there are no competing honest nodes. In a real distributed blockchain network, an attacker attempting to rewrite historical blocks must compute all required proof-of-work while competing against the honest network's cumulative accumulated hash power (the longest/heaviest chain rule). Unless the attacker controls a majority of network hash power (>50%), the honest tip will outpace the attacker's fork.
 
 ---
 
