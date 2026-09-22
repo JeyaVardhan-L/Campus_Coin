@@ -1,7 +1,14 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Block, BlockHeader } from '../../engine/types';
 import { computeBlockHash, validateBlock, mineBlockStep } from '../../engine/block';
-import { Pickaxe, CheckCircle2, AlertTriangle, RefreshCw, Cpu, XCircle } from 'lucide-react';
+import {
+  Pickaxe,
+  CheckCircle2,
+  AlertTriangle,
+  RefreshCw,
+  Cpu,
+  XCircle,
+} from 'lucide-react';
 
 export const BlockLab: React.FC = () => {
   const [index, setIndex] = useState<number>(1);

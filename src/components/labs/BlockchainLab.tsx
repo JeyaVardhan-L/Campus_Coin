@@ -226,15 +226,19 @@ export const BlockchainLab: React.FC = () => {
             lineHeight: 1.5,
           }}
         >
-          <Info size={18} className="text-cyan" style={{ flexShrink: 0, marginTop: '2px' }} />
+          <Info
+            size={18}
+            className="text-cyan"
+            style={{ flexShrink: 0, marginTop: '2px' }}
+          />
           <div>
             <strong style={{ color: 'var(--text-primary)' }}>
               Educational Simulation Note on Chain Repair:
             </strong>{' '}
             This repair works rapidly because this laboratory gives you 100% of the
             simulated mining power and there are no competing honest nodes. In a
-            distributed network, an attacker would need to rebuild modified history
-            while competing against the honest network&apos;s accumulated proof-of-work.
+            distributed network, an attacker would need to rebuild modified history while
+            competing against the honest network&apos;s accumulated proof-of-work.
           </div>
         </div>
       )}

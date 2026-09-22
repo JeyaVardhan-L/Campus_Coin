@@ -75,8 +75,7 @@ export function validateChain(
     const targetDifficulty =
       expectedDifficulty !== undefined ? expectedDifficulty : block.difficulty;
     const targetPrefix = '0'.repeat(Math.max(0, targetDifficulty));
-    const isPoWValid =
-      targetPrefix.length === 0 || computedHash.startsWith(targetPrefix);
+    const isPoWValid = targetPrefix.length === 0 || computedHash.startsWith(targetPrefix);
     const isDifficultyValid = isDifficultyMatch && isPoWValid;
 
     let isLinkValid = true;
