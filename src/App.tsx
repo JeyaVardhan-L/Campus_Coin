@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { HashLab } from './components/labs/HashLab';
+import { BlockLab } from './components/labs/BlockLab';
+import { BlockchainLab } from './components/labs/BlockchainLab';
 
 export type LabTab = 'hash' | 'block' | 'blockchain' | 'lessons';
 
@@ -108,6 +110,8 @@ export default function App() {
         </div>
 
         {activeTab === 'hash' && <HashLab />}
+        {activeTab === 'block' && <BlockLab />}
+        {activeTab === 'blockchain' && <BlockchainLab />}
       </main>
 
       {/* Educational Disclaimer Footer */}
