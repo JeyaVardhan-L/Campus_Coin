@@ -7,6 +7,7 @@ import {
   repairChainFrom,
   GENESIS_PREVIOUS_HASH,
 } from '../../src/engine/blockchain';
+import { computeBlockHash } from '../../src/engine/block';
 
 describe('Blockchain Engine: Linkage, Tampering & Invalidation', () => {
   it('creates a canonical valid chain with Genesis predecessor zeros', () => {
@@ -70,5 +71,55 @@ describe('Blockchain Engine: Linkage, Tampering & Invalidation', () => {
     expect(validation.firstInvalidIndex).toBeNull();
     expect(repaired[1].data).toBe('Revised ledger state');
     expect(repaired[2].previousHash).toBe(repaired[1].hash);
+  });
+
+  describe('Consensus Difficulty Enforcement', () => {
+    it('passes validation when all blocks match the expected network consensus difficulty', () => {
+      const chain = createDefaultChain(4, 2);
+      const validation = validateChain(chain, 2);
+      expect(validation.isValid).toBe(true);
+      expect(validation.firstInvalidIndex).toBeNull();
+    });
+
+    it('rejects a block whose difficulty is manually lowered, even if its hash matches its own declared difficulty', () => {
+      const chain = createDefaultChain(4, 2);
+
+      // Maliciously lower Block #1 difficulty to 0
+      const tamperedChain = [...chain];
+      tamperedChain[1] = {
+        ...tamperedChain[1],
+        difficulty: 0,
+      };
+
+      const validation = validateChain(tamperedChain, 2);
+      expect(validation.isValid).toBe(false);
+      expect(validation.firstInvalidIndex).toBe(1);
+      expect(validation.blockStatuses[1].reason).toContain('does not match network consensus difficulty');
+    });
+
+    it('rejects a modified block even after recalculating its hash at the lowered difficulty', () => {
+      const chain = createDefaultChain(4, 2);
+
+      // Lower Block #1 difficulty to 0 and recompute its hash so hash integrity would otherwise pass
+      const tamperedChain = [...chain];
+      const loweredBlock = {
+        ...tamperedChain[1],
+        difficulty: 0,
+      };
+      loweredBlock.hash = computeBlockHash(loweredBlock);
+      tamperedChain[1] = loweredBlock;
+
+      const validation = validateChain(tamperedChain, 2);
+      expect(validation.isValid).toBe(false);
+      expect(validation.firstInvalidIndex).toBe(1);
+      expect(validation.blockStatuses[1].isDifficultyValid).toBe(false);
+      expect(validation.blockStatuses[1].reason).toContain('network consensus difficulty');
+    });
+
+    it('preserves backward-compatible validation when expectedDifficulty is omitted', () => {
+      const chain = createDefaultChain(4, 2);
+      const validation = validateChain(chain);
+      expect(validation.isValid).toBe(true);
+    });
   });
 });

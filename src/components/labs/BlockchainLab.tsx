@@ -24,8 +24,8 @@ export const BlockchainLab: React.FC = () => {
   const [chain, setChain] = useState<Block[]>(() => createDefaultChain(4, 2));
   const [isRepairing, setIsRepairing] = useState<boolean>(false);
 
-  // Validate entire chain state
-  const validation = useMemo(() => validateChain(chain), [chain]);
+  // Validate entire chain state against expected consensus difficulty (2)
+  const validation = useMemo(() => validateChain(chain, 2), [chain]);
 
   // Handle data editing on any block
   const handleDataChange = (index: number, newData: string) => {

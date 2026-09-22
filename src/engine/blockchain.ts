@@ -47,7 +47,10 @@ export function createDefaultChain(length = 4, difficulty = 2): Block[] {
  * 3. Each block's hash satisfies the difficulty target
  * 4. Each block (after Genesis) points exactly to the previous block's current hash
  */
-export function validateChain(chain: Block[]): ChainValidationResult {
+export function validateChain(
+  chain: Block[],
+  expectedDifficulty?: number,
+): ChainValidationResult {
   if (chain.length === 0) {
     return {
       isValid: true,
@@ -65,9 +68,16 @@ export function validateChain(chain: Block[]): ChainValidationResult {
     const computedHash = computeBlockHash(block);
     const isHashValid = block.hash === computedHash;
 
-    const targetPrefix = '0'.repeat(Math.max(0, block.difficulty));
-    const isDifficultyValid =
+    // Consensus difficulty verification:
+    // If an expected network difficulty is provided, block.difficulty must match it.
+    const isDifficultyMatch =
+      expectedDifficulty === undefined || block.difficulty === expectedDifficulty;
+    const targetDifficulty =
+      expectedDifficulty !== undefined ? expectedDifficulty : block.difficulty;
+    const targetPrefix = '0'.repeat(Math.max(0, targetDifficulty));
+    const isPoWValid =
       targetPrefix.length === 0 || computedHash.startsWith(targetPrefix);
+    const isDifficultyValid = isDifficultyMatch && isPoWValid;
 
     let isLinkValid = true;
     let reason: string | undefined;
@@ -94,10 +104,13 @@ export function validateChain(chain: Block[]): ChainValidationResult {
       reason = reason
         ? `${reason}; Hash altered.`
         : 'Block hash does not match computed data hash.';
-    } else if (!isDifficultyValid) {
-      reason = reason
-        ? `${reason}; Difficulty unmet.`
-        : `Does not meet difficulty target of ${block.difficulty}.`;
+    }
+    if (!isDifficultyMatch) {
+      const diffReason = `Block declared difficulty (${block.difficulty}) does not match network consensus difficulty (${expectedDifficulty}).`;
+      reason = reason ? `${reason}; ${diffReason}` : diffReason;
+    } else if (!isPoWValid) {
+      const powReason = `Does not meet proof-of-work difficulty target of ${targetDifficulty} leading zeros.`;
+      reason = reason ? `${reason}; ${powReason}` : powReason;
     }
 
     const isValid = isHashValid && isLinkValid && isDifficultyValid;
