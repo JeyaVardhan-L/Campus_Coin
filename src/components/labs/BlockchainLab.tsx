@@ -94,7 +94,9 @@ export const BlockchainLab: React.FC = () => {
           flexWrap: 'wrap',
           gap: '16px',
           padding: '16px 20px',
-          background: validation.isValid ? 'rgba(16, 185, 129, 0.05)' : 'rgba(244, 63, 94, 0.06)',
+          background: validation.isValid
+            ? 'rgba(16, 185, 129, 0.05)'
+            : 'rgba(244, 63, 94, 0.06)',
           border: `1px solid ${validation.isValid ? 'var(--border-valid)' : 'var(--border-invalid)'}`,
           borderRadius: 'var(--radius-lg)',
         }}
@@ -105,7 +107,9 @@ export const BlockchainLab: React.FC = () => {
               width: '42px',
               height: '42px',
               borderRadius: '8px',
-              background: validation.isValid ? 'var(--accent-emerald-glow)' : 'var(--accent-rose-glow)',
+              background: validation.isValid
+                ? 'var(--accent-emerald-glow)'
+                : 'var(--accent-rose-glow)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -117,13 +121,25 @@ export const BlockchainLab: React.FC = () => {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <span style={{ fontSize: '1.125rem', fontWeight: 700 }}>
-                {validation.isValid ? 'Chain Integrity: Valid' : 'Chain Integrity: Broken (Tampered)'}
+                {validation.isValid
+                  ? 'Chain Integrity: Valid'
+                  : 'Chain Integrity: Broken (Tampered)'}
               </span>
-              <span className={`badge ${validation.isValid ? 'badge-emerald' : 'badge-rose'}`}>
-                {validation.isValid ? `${chain.length}/${chain.length} Blocks Verified` : `Broken at Block #${validation.firstInvalidIndex}`}
+              <span
+                className={`badge ${validation.isValid ? 'badge-emerald' : 'badge-rose'}`}
+              >
+                {validation.isValid
+                  ? `${chain.length}/${chain.length} Blocks Verified`
+                  : `Broken at Block #${validation.firstInvalidIndex}`}
               </span>
             </div>
-            <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+            <p
+              style={{
+                fontSize: '0.8125rem',
+                color: 'var(--text-secondary)',
+                marginTop: '2px',
+              }}
+            >
               {validation.summary}
             </p>
           </div>
@@ -140,7 +156,9 @@ export const BlockchainLab: React.FC = () => {
               title="Recalculate and re-mine from the broken block to the tip of the chain"
             >
               <Wrench size={14} />
-              {isRepairing ? 'Re-mining Chain...' : `Re-mine From Block #${validation.firstInvalidIndex}`}
+              {isRepairing
+                ? 'Re-mining Chain...'
+                : `Re-mine From Block #${validation.firstInvalidIndex}`}
             </button>
           )}
 
@@ -182,7 +200,10 @@ export const BlockchainLab: React.FC = () => {
         >
           <ShieldAlert size={20} className="text-rose" style={{ flexShrink: 0 }} />
           <div>
-            <strong>Cascading Invalidation in Action:</strong> Because Block #{validation.firstInvalidIndex}&apos;s data or nonce was altered, its hash changed. Every downstream block that linked to it now fails the previous hash check!
+            <strong>Cascading Invalidation in Action:</strong> Because Block #
+            {validation.firstInvalidIndex}&apos;s data or nonce was altered, its hash
+            changed. Every downstream block that linked to it now fails the previous hash
+            check!
           </div>
         </div>
       )}
@@ -203,7 +224,10 @@ export const BlockchainLab: React.FC = () => {
           const isGenesis = idx === 0;
 
           return (
-            <div key={block.index} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div
+              key={block.index}
+              style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+            >
               <div
                 className={`card ${isCurrentValid ? 'card-valid' : 'card-invalid'}`}
                 style={{
@@ -228,18 +252,28 @@ export const BlockchainLab: React.FC = () => {
                         fontSize: '1.125rem',
                         fontWeight: 700,
                         fontFamily: 'var(--font-mono)',
-                        color: isCurrentValid ? 'var(--accent-cyan)' : 'var(--accent-rose)',
+                        color: isCurrentValid
+                          ? 'var(--accent-cyan)'
+                          : 'var(--accent-rose)',
                       }}
                     >
                       Block #{block.index} {isGenesis && '(Genesis)'}
                     </span>
-                    <span className={`badge ${isCurrentValid ? 'badge-emerald' : 'badge-rose'}`}>
+                    <span
+                      className={`badge ${isCurrentValid ? 'badge-emerald' : 'badge-rose'}`}
+                    >
                       {isCurrentValid ? 'Intact' : 'Broken'}
                     </span>
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        color: 'var(--text-muted)',
+                        fontFamily: 'var(--font-mono)',
+                      }}
+                    >
                       Nonce: {block.nonce}
                     </span>
                     <button
@@ -257,8 +291,17 @@ export const BlockchainLab: React.FC = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {/* Previous Hash Link */}
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                      <span className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginBottom: '4px',
+                      }}
+                    >
+                      <span
+                        className="input-label"
+                        style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                      >
                         {status?.isLinkValid ? (
                           <Link2 size={12} className="text-emerald" />
                         ) : (
@@ -271,10 +314,14 @@ export const BlockchainLab: React.FC = () => {
                           style={{
                             fontSize: '0.6875rem',
                             fontFamily: 'var(--font-mono)',
-                            color: status?.isLinkValid ? 'var(--accent-emerald)' : 'var(--accent-rose)',
+                            color: status?.isLinkValid
+                              ? 'var(--accent-emerald)'
+                              : 'var(--accent-rose)',
                           }}
                         >
-                          {status?.isLinkValid ? '✓ Matches Parent Hash' : '✗ Broken Link to Parent'}
+                          {status?.isLinkValid
+                            ? '✓ Matches Parent Hash'
+                            : '✗ Broken Link to Parent'}
                         </span>
                       )}
                     </div>
@@ -283,7 +330,9 @@ export const BlockchainLab: React.FC = () => {
                       style={{
                         fontSize: '0.75rem',
                         padding: '6px 10px',
-                        color: status?.isLinkValid ? 'var(--text-secondary)' : 'var(--accent-rose)',
+                        color: status?.isLinkValid
+                          ? 'var(--text-secondary)'
+                          : 'var(--accent-rose)',
                         background: 'rgba(6, 9, 15, 0.6)',
                       }}
                     >
@@ -297,7 +346,11 @@ export const BlockchainLab: React.FC = () => {
                       <label className="input-label" htmlFor={`block-data-${idx}`}>
                         Data / Transactions (Edit to simulate tampering)
                       </label>
-                      <span style={{ fontSize: '0.6875rem', color: 'var(--accent-cyan)' }}>Editable</span>
+                      <span
+                        style={{ fontSize: '0.6875rem', color: 'var(--accent-cyan)' }}
+                      >
+                        Editable
+                      </span>
                     </div>
                     <textarea
                       id={`block-data-${idx}`}
@@ -307,7 +360,9 @@ export const BlockchainLab: React.FC = () => {
                       rows={2}
                       style={{
                         fontSize: '0.8125rem',
-                        borderColor: isCurrentValid ? 'var(--border-subtle)' : 'var(--accent-rose)',
+                        borderColor: isCurrentValid
+                          ? 'var(--border-subtle)'
+                          : 'var(--accent-rose)',
                       }}
                     />
                   </div>
@@ -320,24 +375,40 @@ export const BlockchainLab: React.FC = () => {
                     <input
                       type="number"
                       value={block.nonce}
-                      onChange={(e) => handleNonceChange(idx, parseInt(e.target.value) || 0)}
+                      onChange={(e) =>
+                        handleNonceChange(idx, parseInt(e.target.value) || 0)
+                      }
                       className="input-text"
-                      style={{ width: '120px', padding: '4px 8px', fontSize: '0.8125rem' }}
+                      style={{
+                        width: '120px',
+                        padding: '4px 8px',
+                        fontSize: '0.8125rem',
+                      }}
                     />
                   </div>
 
                   {/* Hash Output */}
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginBottom: '4px',
+                      }}
+                    >
                       <span className="input-label">Block Hash</span>
                       <span
                         style={{
                           fontSize: '0.6875rem',
                           fontFamily: 'var(--font-mono)',
-                          color: status?.isHashValid ? 'var(--accent-emerald)' : 'var(--accent-rose)',
+                          color: status?.isHashValid
+                            ? 'var(--accent-emerald)'
+                            : 'var(--accent-rose)',
                         }}
                       >
-                        {status?.isHashValid ? '✓ Hash matches payload' : '✗ Hash altered'}
+                        {status?.isHashValid
+                          ? '✓ Hash matches payload'
+                          : '✗ Hash altered'}
                       </span>
                     </div>
                     <div
@@ -345,7 +416,9 @@ export const BlockchainLab: React.FC = () => {
                       style={{
                         fontSize: '0.75rem',
                         padding: '6px 10px',
-                        color: isCurrentValid ? 'var(--accent-emerald)' : 'var(--accent-rose)',
+                        color: isCurrentValid
+                          ? 'var(--accent-emerald)'
+                          : 'var(--accent-rose)',
                         background: 'rgba(6, 9, 15, 0.95)',
                       }}
                     >

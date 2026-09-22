@@ -4,7 +4,10 @@ import { calculateAvalanche, AvalancheResult } from '../../crypto/avalanche';
 import { Copy, Check, Sparkles, ArrowRightLeft, Binary } from 'lucide-react';
 
 const PRESETS = [
-  { label: 'Genesis Message', text: 'The Times 03/Jan/2009 Chancellor on brink of second bailout for banks' },
+  {
+    label: 'Genesis Message',
+    text: 'The Times 03/Jan/2009 Chancellor on brink of second bailout for banks',
+  },
   { label: 'LedgerLab Sample', text: 'Alice transfers 50 tokens to Bob' },
   { label: 'Single Letter A', text: 'A' },
   { label: 'Single Letter B', text: 'B' },
@@ -49,7 +52,8 @@ export const HashLab: React.FC = () => {
     } else if (type === 'case') {
       if (inputText.length > 0) {
         const first = inputText[0];
-        const toggled = first === first.toUpperCase() ? first.toLowerCase() : first.toUpperCase();
+        const toggled =
+          first === first.toUpperCase() ? first.toLowerCase() : first.toUpperCase();
         setCompareText(toggled + inputText.slice(1));
       }
     }
@@ -96,12 +100,26 @@ export const HashLab: React.FC = () => {
 
       {/* Main Single Hash Inspector */}
       <div className="card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '12px',
+          }}
+        >
           <label className="input-label" htmlFor="hash-input">
             Input Data (Arbitrary Length)
           </label>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-            {inputText.length} characters ({new TextEncoder().encode(inputText).length} bytes)
+          <span
+            style={{
+              fontSize: '0.75rem',
+              color: 'var(--text-muted)',
+              fontFamily: 'var(--font-mono)',
+            }}
+          >
+            {inputText.length} characters ({new TextEncoder().encode(inputText).length}{' '}
+            bytes)
           </span>
         </div>
 
@@ -117,8 +135,17 @@ export const HashLab: React.FC = () => {
 
         {/* SHA-256 Output */}
         <div style={{ marginTop: '18px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <span className="input-label">SHA-256 Output (Fixed 256 bits / 64 hex characters)</span>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '8px',
+            }}
+          >
+            <span className="input-label">
+              SHA-256 Output (Fixed 256 bits / 64 hex characters)
+            </span>
             <div style={{ display: 'flex', gap: '8px' }}>
               <button
                 onClick={() => setShowBinaryStream(!showBinaryStream)}
@@ -135,7 +162,11 @@ export const HashLab: React.FC = () => {
                 style={{ padding: '4px 10px', fontSize: '0.75rem' }}
                 title="Copy hash to clipboard"
               >
-                {copied ? <Check size={14} className="text-emerald" /> : <Copy size={14} />}
+                {copied ? (
+                  <Check size={14} className="text-emerald" />
+                ) : (
+                  <Copy size={14} />
+                )}
                 {copied ? 'Copied' : 'Copy Hash'}
               </button>
             </div>
@@ -172,7 +203,9 @@ export const HashLab: React.FC = () => {
                 lineHeight: 1.6,
               }}
             >
-              <div style={{ color: 'var(--text-muted)', marginBottom: '4px' }}>256-Bit Raw Stream:</div>
+              <div style={{ color: 'var(--text-muted)', marginBottom: '4px' }}>
+                256-Bit Raw Stream:
+              </div>
               {binary}
             </div>
           )}
@@ -196,15 +229,31 @@ export const HashLab: React.FC = () => {
 
       {/* Avalanche Effect Interactive Laboratory */}
       <div className="card" style={{ border: '1px solid var(--border-medium)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '16px',
+          }}
+        >
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Sparkles size={18} className="text-amber" />
-              <h3 style={{ fontSize: '1.125rem', fontWeight: 600 }}>The Avalanche Effect</h3>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: 600 }}>
+                The Avalanche Effect
+              </h3>
               <span className="badge badge-amber">Experiment</span>
             </div>
-            <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
-              In a secure cryptographic hash function, changing just 1 bit in the input flips approximately 50% of the output bits unpredictably.
+            <p
+              style={{
+                fontSize: '0.8125rem',
+                color: 'var(--text-secondary)',
+                marginTop: '4px',
+              }}
+            >
+              In a secure cryptographic hash function, changing just 1 bit in the input
+              flips approximately 50% of the output bits unpredictably.
             </p>
           </div>
           <button
@@ -220,7 +269,13 @@ export const HashLab: React.FC = () => {
         {showAvalanche && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {/* Comparative inputs */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '16px',
+              }}
+            >
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <span className="input-label" style={{ color: 'var(--accent-cyan)' }}>
                   Input A (Original)
@@ -231,13 +286,22 @@ export const HashLab: React.FC = () => {
                   onChange={(e) => setInputText(e.target.value)}
                   className="input-text"
                 />
-                <span className="font-mono text-muted" style={{ fontSize: '0.75rem', wordBreak: 'break-all' }}>
+                <span
+                  className="font-mono text-muted"
+                  style={{ fontSize: '0.75rem', wordBreak: 'break-all' }}
+                >
                   Hash: {avalanche.hashA.slice(0, 24)}...
                 </span>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
                   <span className="input-label" style={{ color: 'var(--accent-amber)' }}>
                     Input B (Modified)
                   </span>
@@ -275,7 +339,10 @@ export const HashLab: React.FC = () => {
                   onChange={(e) => setCompareText(e.target.value)}
                   className="input-text"
                 />
-                <span className="font-mono text-muted" style={{ fontSize: '0.75rem', wordBreak: 'break-all' }}>
+                <span
+                  className="font-mono text-muted"
+                  style={{ fontSize: '0.75rem', wordBreak: 'break-all' }}
+                >
                   Hash: {avalanche.hashB.slice(0, 24)}...
                 </span>
               </div>
@@ -295,24 +362,37 @@ export const HashLab: React.FC = () => {
               }}
             >
               <div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Flipped Bits</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  Flipped Bits
+                </div>
                 <div
                   style={{
                     fontSize: '1.5rem',
                     fontWeight: 700,
                     fontFamily: 'var(--font-mono)',
-                    color: avalanche.flippedBits > 100 ? 'var(--accent-emerald)' : 'var(--accent-amber)',
+                    color:
+                      avalanche.flippedBits > 100
+                        ? 'var(--accent-emerald)'
+                        : 'var(--accent-amber)',
                   }}
                 >
                   {avalanche.flippedBits}{' '}
-                  <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: 400 }}>
+                  <span
+                    style={{
+                      fontSize: '0.875rem',
+                      color: 'var(--text-muted)',
+                      fontWeight: 400,
+                    }}
+                  >
                     / {avalanche.totalBits}
                   </span>
                 </div>
               </div>
 
               <div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Bit Flip Ratio</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  Bit Flip Ratio
+                </div>
                 <div
                   style={{
                     fontSize: '1.5rem',
@@ -326,7 +406,9 @@ export const HashLab: React.FC = () => {
               </div>
 
               <div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Hamming Distance</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  Hamming Distance
+                </div>
                 <div
                   style={{
                     fontSize: '1.5rem',
@@ -340,7 +422,9 @@ export const HashLab: React.FC = () => {
               </div>
 
               <div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Ideal Target</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  Ideal Target
+                </div>
                 <div
                   style={{
                     fontSize: '1.5rem',
@@ -364,7 +448,9 @@ export const HashLab: React.FC = () => {
                   marginBottom: '8px',
                 }}
               >
-                <span className="input-label">256-Bit Difference Matrix (Each square is 1 output bit)</span>
+                <span className="input-label">
+                  256-Bit Difference Matrix (Each square is 1 output bit)
+                </span>
                 <div style={{ display: 'flex', gap: '12px', fontSize: '0.75rem' }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <span
@@ -414,7 +500,9 @@ export const HashLab: React.FC = () => {
                       style={{
                         height: '12px',
                         borderRadius: '2px',
-                        backgroundColor: isFlipped ? 'var(--accent-amber)' : 'rgba(30, 44, 68, 0.7)',
+                        backgroundColor: isFlipped
+                          ? 'var(--accent-amber)'
+                          : 'rgba(30, 44, 68, 0.7)',
                         boxShadow: isFlipped ? '0 0 4px rgba(245, 158, 11, 0.5)' : 'none',
                         transition: 'background-color 200ms ease',
                       }}

@@ -84,7 +84,11 @@ export default function App() {
                 id={`tab-${tab}`}
                 onClick={() => setActiveTab(tab)}
                 className={`btn ${activeTab === tab ? 'btn-primary' : 'btn-secondary'}`}
-                style={{ fontSize: '0.8125rem', padding: '6px 14px', textTransform: 'capitalize' }}
+                style={{
+                  fontSize: '0.8125rem',
+                  padding: '6px 14px',
+                  textTransform: 'capitalize',
+                }}
               >
                 {tab === 'blockchain' ? 'Blockchain Lab' : `${tab} Lab`}
               </button>
@@ -94,7 +98,15 @@ export default function App() {
       </header>
 
       {/* Main Container */}
-      <main style={{ flex: 1, maxWidth: '1280px', width: '100%', margin: '0 auto', padding: '24px' }}>
+      <main
+        style={{
+          flex: 1,
+          maxWidth: '1280px',
+          width: '100%',
+          margin: '0 auto',
+          padding: '24px',
+        }}
+      >
         <div style={{ padding: '40px 0', textAlign: 'center' }}>
           <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '8px' }}>
             {activeTab === 'hash' && 'Cryptographic Hash Laboratory'}
@@ -102,11 +114,21 @@ export default function App() {
             {activeTab === 'blockchain' && 'Multi-Block Chain & Tamper Laboratory'}
             {activeTab === 'lessons' && 'Guided Curriculum & Challenges'}
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '640px', margin: '0 auto' }}>
-            {activeTab === 'hash' && 'Explore one-way SHA-256 hashing and the dramatic avalanche effect.'}
-            {activeTab === 'block' && 'Inspect internal block headers, cryptographic linkage, and proof-of-work mining.'}
-            {activeTab === 'blockchain' && 'Experiment with downstream chain invalidation when historical blocks are tampered with.'}
-            {activeTab === 'lessons' && 'Step-by-step interactive exercises to test your understanding.'}
+          <p
+            style={{
+              color: 'var(--text-secondary)',
+              maxWidth: '640px',
+              margin: '0 auto',
+            }}
+          >
+            {activeTab === 'hash' &&
+              'Explore one-way SHA-256 hashing and the dramatic avalanche effect.'}
+            {activeTab === 'block' &&
+              'Inspect internal block headers, cryptographic linkage, and proof-of-work mining.'}
+            {activeTab === 'blockchain' &&
+              'Experiment with downstream chain invalidation when historical blocks are tampered with.'}
+            {activeTab === 'lessons' &&
+              'Step-by-step interactive exercises to test your understanding.'}
           </p>
         </div>
 
@@ -128,7 +150,12 @@ export default function App() {
         }}
       >
         <p>
-          <strong style={{ color: 'var(--text-secondary)' }}>Educational Simulation Notice:</strong> LedgerLab is an educational laboratory for understanding blockchain mechanics. It does not manage, store, or transmit real cryptocurrency. Keys and data generated in LedgerLab are purely simulated.
+          <strong style={{ color: 'var(--text-secondary)' }}>
+            Educational Simulation Notice:
+          </strong>{' '}
+          LedgerLab is an educational laboratory for understanding blockchain mechanics.
+          It does not manage, store, or transmit real cryptocurrency. Keys and data
+          generated in LedgerLab are purely simulated.
         </p>
       </footer>
     </div>

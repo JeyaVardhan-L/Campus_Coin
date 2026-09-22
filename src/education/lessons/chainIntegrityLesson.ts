@@ -32,8 +32,7 @@ export const chainIntegrityLesson: Lesson = {
     {
       id: 'step-3',
       title: 'Observe the cascading downstream invalidation',
-      instruction:
-        'Examine Blocks #2, #3, and #4 after tampering with Block #1.',
+      instruction: 'Examine Blocks #2, #3, and #4 after tampering with Block #1.',
       explanation:
         'Because Block #2 still points to Block #1’s old hash, its cryptographic link is broken! Even though nobody touched Block #3 or #4, the entire sequence following the tampered block is rejected by the network.',
       hint: 'Notice the red broken link arrows pointing between subsequent blocks.',

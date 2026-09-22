@@ -6,8 +6,12 @@ import { Pickaxe, CheckCircle2, AlertTriangle, RefreshCw, Cpu } from 'lucide-rea
 export const BlockLab: React.FC = () => {
   const [index, setIndex] = useState<number>(1);
   const [timestamp, setTimestamp] = useState<number>(1700000000000);
-  const [previousHash, setPreviousHash] = useState<string>('0000a1b2c3d4e5f67890abcdef1234567890abcdef1234567890abcdef123456');
-  const [data, setData] = useState<string>('Alice sent 25 tokens to Bob (Campus Cafeteria)');
+  const [previousHash, setPreviousHash] = useState<string>(
+    '0000a1b2c3d4e5f67890abcdef1234567890abcdef1234567890abcdef123456',
+  );
+  const [data, setData] = useState<string>(
+    'Alice sent 25 tokens to Bob (Campus Cafeteria)',
+  );
   const [nonce, setNonce] = useState<number>(42);
   const [difficulty, setDifficulty] = useState<number>(2);
 
@@ -110,11 +114,14 @@ export const BlockLab: React.FC = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span className="badge badge-cyan">Block Structure</span>
           <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
-            A block binds data, metadata, previous hash, and a proof-of-work nonce into a cryptographic summary.
+            A block binds data, metadata, previous hash, and a proof-of-work nonce into a
+            cryptographic summary.
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>Difficulty:</span>
+          <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
+            Difficulty:
+          </span>
           <div style={{ display: 'flex', gap: '4px' }}>
             {[1, 2, 3, 4].map((d) => (
               <button
@@ -144,7 +151,13 @@ export const BlockLab: React.FC = () => {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+            <h3
+              style={{
+                fontSize: '1.25rem',
+                fontWeight: 700,
+                fontFamily: 'var(--font-mono)',
+              }}
+            >
               Block #{index}
             </h3>
             {validation.isValid ? (
@@ -168,7 +181,8 @@ export const BlockLab: React.FC = () => {
             >
               {isMining ? (
                 <>
-                  <RefreshCw size={14} className="spin" /> Mining ({miningAttempts.toLocaleString()} hashes)...
+                  <RefreshCw size={14} className="spin" /> Mining (
+                  {miningAttempts.toLocaleString()} hashes)...
                 </>
               ) : (
                 <>
@@ -188,7 +202,14 @@ export const BlockLab: React.FC = () => {
         </div>
 
         {/* Block Form Fields */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: '16px',
+            marginBottom: '16px',
+          }}
+        >
           <div className="input-group">
             <label className="input-label" htmlFor="block-index">
               Block Index / Height
@@ -278,11 +299,24 @@ export const BlockLab: React.FC = () => {
           }}
         >
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '4px',
+              }}
+            >
               <span className="input-label" style={{ color: 'var(--text-secondary)' }}>
                 Computed Hash (Real-time from inputs)
               </span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+              <span
+                style={{
+                  fontSize: '0.75rem',
+                  color: 'var(--text-muted)',
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
                 Target prefix: {'0'.repeat(difficulty)}...
               </span>
             </div>
@@ -290,7 +324,9 @@ export const BlockLab: React.FC = () => {
               id="block-computed-hash"
               className="code-box"
               style={{
-                color: computedHash.startsWith('0'.repeat(difficulty)) ? 'var(--accent-emerald)' : 'var(--text-primary)',
+                color: computedHash.startsWith('0'.repeat(difficulty))
+                  ? 'var(--accent-emerald)'
+                  : 'var(--text-primary)',
               }}
             >
               {computedHash}
@@ -298,7 +334,14 @@ export const BlockLab: React.FC = () => {
           </div>
 
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '4px',
+              }}
+            >
               <span className="input-label" style={{ color: 'var(--text-secondary)' }}>
                 Recorded Stored Hash
               </span>
@@ -306,17 +349,25 @@ export const BlockLab: React.FC = () => {
                 style={{
                   fontSize: '0.75rem',
                   fontFamily: 'var(--font-mono)',
-                  color: storedHash === computedHash ? 'var(--accent-emerald)' : 'var(--accent-rose)',
+                  color:
+                    storedHash === computedHash
+                      ? 'var(--accent-emerald)'
+                      : 'var(--accent-rose)',
                 }}
               >
-                {storedHash === computedHash ? '✓ Matches Computed' : '✗ Hash Mismatch (Tampered)'}
+                {storedHash === computedHash
+                  ? '✓ Matches Computed'
+                  : '✗ Hash Mismatch (Tampered)'}
               </span>
             </div>
             <div
               id="block-stored-hash"
               className="code-box"
               style={{
-                color: storedHash === computedHash ? 'var(--accent-emerald)' : 'var(--accent-rose)',
+                color:
+                  storedHash === computedHash
+                    ? 'var(--accent-emerald)'
+                    : 'var(--accent-rose)',
               }}
             >
               {storedHash}
@@ -330,22 +381,39 @@ export const BlockLab: React.FC = () => {
               alignItems: 'center',
               gap: '10px',
               padding: '10px 12px',
-              background: validation.isValid ? 'rgba(16, 185, 129, 0.08)' : 'rgba(244, 63, 94, 0.08)',
+              background: validation.isValid
+                ? 'rgba(16, 185, 129, 0.08)'
+                : 'rgba(244, 63, 94, 0.08)',
               borderRadius: 'var(--radius-sm)',
               borderLeft: `3px solid ${validation.isValid ? 'var(--accent-emerald)' : 'var(--accent-rose)'}`,
               fontSize: '0.8125rem',
               color: 'var(--text-secondary)',
             }}
           >
-            <Cpu size={16} style={{ color: validation.isValid ? 'var(--accent-emerald)' : 'var(--accent-rose)' }} />
+            <Cpu
+              size={16}
+              style={{
+                color: validation.isValid
+                  ? 'var(--accent-emerald)'
+                  : 'var(--accent-rose)',
+              }}
+            />
             <span>
               {validation.isValid ? (
                 <>
-                  <strong style={{ color: 'var(--text-primary)' }}>Block is valid:</strong> The stored hash matches the computed hash of the contents, and satisfies the required difficulty ({difficulty} leading zeros).
+                  <strong style={{ color: 'var(--text-primary)' }}>
+                    Block is valid:
+                  </strong>{' '}
+                  The stored hash matches the computed hash of the contents, and satisfies
+                  the required difficulty ({difficulty} leading zeros).
                 </>
               ) : (
                 <>
-                  <strong style={{ color: 'var(--accent-rose)' }}>Block is invalid:</strong> {validation.error} Click <strong>Mine Block</strong> to search for a nonce that satisfies the target difficulty.
+                  <strong style={{ color: 'var(--accent-rose)' }}>
+                    Block is invalid:
+                  </strong>{' '}
+                  {validation.error} Click <strong>Mine Block</strong> to search for a
+                  nonce that satisfies the target difficulty.
                 </>
               )}
             </span>

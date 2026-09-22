@@ -66,7 +66,8 @@ export function validateChain(chain: Block[]): ChainValidationResult {
     const isHashValid = block.hash === computedHash;
 
     const targetPrefix = '0'.repeat(Math.max(0, block.difficulty));
-    const isDifficultyValid = targetPrefix.length === 0 || computedHash.startsWith(targetPrefix);
+    const isDifficultyValid =
+      targetPrefix.length === 0 || computedHash.startsWith(targetPrefix);
 
     let isLinkValid = true;
     let reason: string | undefined;
@@ -90,9 +91,13 @@ export function validateChain(chain: Block[]): ChainValidationResult {
     }
 
     if (!isHashValid) {
-      reason = reason ? `${reason}; Hash altered.` : 'Block hash does not match computed data hash.';
+      reason = reason
+        ? `${reason}; Hash altered.`
+        : 'Block hash does not match computed data hash.';
     } else if (!isDifficultyValid) {
-      reason = reason ? `${reason}; Difficulty unmet.` : `Does not meet difficulty target of ${block.difficulty}.`;
+      reason = reason
+        ? `${reason}; Difficulty unmet.`
+        : `Does not meet difficulty target of ${block.difficulty}.`;
     }
 
     const isValid = isHashValid && isLinkValid && isDifficultyValid;
@@ -145,7 +150,11 @@ export function tamperBlockData(chain: Block[], index: number, newData: string):
 /**
  * Modifies the nonce of a specific block to simulate nonce tampering.
  */
-export function tamperBlockNonce(chain: Block[], index: number, newNonce: number): Block[] {
+export function tamperBlockNonce(
+  chain: Block[],
+  index: number,
+  newNonce: number,
+): Block[] {
   return chain.map((block, i) => {
     if (i === index) {
       return {

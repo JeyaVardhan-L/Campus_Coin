@@ -19,7 +19,8 @@ export function validateBlock(block: Block): BlockValidation {
   const isHashValid = block.hash === computedHash;
 
   const targetPrefix = '0'.repeat(Math.max(0, block.difficulty));
-  const isDifficultyValid = targetPrefix.length === 0 || computedHash.startsWith(targetPrefix);
+  const isDifficultyValid =
+    targetPrefix.length === 0 || computedHash.startsWith(targetPrefix);
 
   const isValid = isHashValid && isDifficultyValid;
   let error: string | undefined;

@@ -44,15 +44,32 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
 
   const isStepDone = (stepId: string) => !!completedSteps[stepId];
 
-  const lessonCompletedCount = activeLesson.steps.filter((s) => completedSteps[s.id]).length;
-  const progressPercent = Math.round((lessonCompletedCount / activeLesson.steps.length) * 100);
+  const lessonCompletedCount = activeLesson.steps.filter(
+    (s) => completedSteps[s.id],
+  ).length;
+  const progressPercent = Math.round(
+    (lessonCompletedCount / activeLesson.steps.length) * 100,
+  );
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(260px, 320px) 1fr', gap: '24px' }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'minmax(260px, 320px) 1fr',
+        gap: '24px',
+      }}
+    >
       {/* Sidebar: Lesson List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <div className="card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '14px',
+            }}
+          >
             <BookOpen size={18} className="text-cyan" />
             <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>Curriculum Units</h3>
           </div>
@@ -60,7 +77,9 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {LESSON_CATALOG.map((lesson) => {
               const isSelected = lesson.id === activeLesson.id;
-              const completedCount = lesson.steps.filter((s) => completedSteps[s.id]).length;
+              const completedCount = lesson.steps.filter(
+                (s) => completedSteps[s.id],
+              ).length;
               const isFullyDone = completedCount === lesson.steps.length;
 
               return (
@@ -80,7 +99,13 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
                     transition: 'all var(--transition-fast)',
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
                     <span
                       style={{
                         fontSize: '0.6875rem',
@@ -148,26 +173,56 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {/* Lesson Header Card */}
         <div className="card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              marginBottom: '12px',
+            }}
+          >
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginBottom: '4px',
+                }}
+              >
                 <span className="badge badge-cyan">Lesson {activeLesson.number}</span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                   Est. time: {activeLesson.estimatedMinutes} minutes
                 </span>
               </div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>{activeLesson.title}</h2>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>
+                {activeLesson.title}
+              </h2>
             </div>
 
             <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Progress</div>
-              <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                Progress
+              </div>
+              <div
+                style={{
+                  fontSize: '1.125rem',
+                  fontWeight: 700,
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
                 {progressPercent}%
               </div>
             </div>
           </div>
 
-          <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+          <p
+            style={{
+              fontSize: '0.875rem',
+              color: 'var(--text-secondary)',
+              lineHeight: 1.6,
+            }}
+          >
             {activeLesson.objective}
           </p>
 
@@ -211,7 +266,9 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
                   style={{ padding: '4px 10px', fontSize: '0.75rem' }}
                 >
                   Step {idx + 1}
-                  {isStepDone(step.id) && <CheckCircle2 size={12} className="text-emerald" />}
+                  {isStepDone(step.id) && (
+                    <CheckCircle2 size={12} className="text-emerald" />
+                  )}
                 </button>
               ))}
             </div>
@@ -268,7 +325,13 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
               👉 <strong>Action:</strong> {currentStep.instruction}
             </div>
 
-            <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            <div
+              style={{
+                fontSize: '0.875rem',
+                color: 'var(--text-secondary)',
+                lineHeight: 1.6,
+              }}
+            >
               {currentStep.explanation}
             </div>
 
@@ -303,14 +366,21 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
             )}
 
             {/* Checkpoint Completed Button */}
-            <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-start' }}>
+            <div
+              style={{ marginTop: '8px', display: 'flex', justifyContent: 'flex-start' }}
+            >
               <button
                 onClick={() => toggleStepCompleted(currentStep.id)}
                 className={`btn ${isStepDone(currentStep.id) ? 'btn-primary' : 'btn-secondary'}`}
                 style={{ fontSize: '0.8125rem', padding: '8px 16px' }}
               >
-                <CheckCircle2 size={16} className={isStepDone(currentStep.id) ? 'text-cyan' : 'text-muted'} />
-                {isStepDone(currentStep.id) ? 'Step Completed! Click to uncheck' : 'Mark Step as Completed'}
+                <CheckCircle2
+                  size={16}
+                  className={isStepDone(currentStep.id) ? 'text-cyan' : 'text-muted'}
+                />
+                {isStepDone(currentStep.id)
+                  ? 'Step Completed! Click to uncheck'
+                  : 'Mark Step as Completed'}
               </button>
             </div>
           </div>
@@ -318,17 +388,37 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
 
         {/* Lesson Challenge Card */}
         <div className="card" style={{ background: 'rgba(15, 22, 35, 0.95)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '8px',
+            }}
+          >
             <Award size={20} className="text-amber" />
             <h3 style={{ fontSize: '1.125rem', fontWeight: 600 }}>Lesson Challenge</h3>
             <span className="badge badge-amber">Concept Test</span>
           </div>
 
-          <h4 style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '6px' }}>
+          <h4
+            style={{
+              fontSize: '0.9375rem',
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              marginBottom: '6px',
+            }}
+          >
             {activeLesson.challenge.title}
           </h4>
 
-          <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginBottom: '12px' }}>
+          <p
+            style={{
+              fontSize: '0.875rem',
+              color: 'var(--text-secondary)',
+              marginBottom: '12px',
+            }}
+          >
             {activeLesson.challenge.description}
           </p>
 
@@ -356,7 +446,9 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
                 lineHeight: 1.6,
               }}
             >
-              <strong style={{ color: 'var(--accent-emerald)' }}>Mechanism Explanation: </strong>
+              <strong style={{ color: 'var(--accent-emerald)' }}>
+                Mechanism Explanation:{' '}
+              </strong>
               {activeLesson.challenge.solutionExplanation}
             </div>
           )}
