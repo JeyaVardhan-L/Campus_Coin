@@ -195,7 +195,12 @@ export default function App() {
           </p>
         </div>
 
-        {activeTab === 'hash' && <HashLab />}
+        {activeTab === 'hash' && (
+          <HashLab
+            onNavigateNext={() => setActiveTab('block')}
+            isGuidedMode={isGuidedMode}
+          />
+        )}
         {activeTab === 'block' && <BlockLab />}
         {activeTab === 'blockchain' && <BlockchainLab />}
         {activeTab === 'lessons' && <LessonRunner onNavigateTab={setActiveTab} />}

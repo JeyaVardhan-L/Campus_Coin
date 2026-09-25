@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { sha256Sync, hexToBinary } from '../../crypto/sha256';
 import { calculateAvalanche, AvalancheResult } from '../../crypto/avalanche';
 import { Copy, Check, Sparkles, ArrowRightLeft, Binary } from 'lucide-react';
+import { MissionPanel } from '../common/MissionPanel';
 
 const PRESETS = [
   {
@@ -13,7 +14,15 @@ const PRESETS = [
   { label: 'Single Letter B', text: 'B' },
 ];
 
-export const HashLab: React.FC = () => {
+export interface HashLabProps {
+  onNavigateNext?: () => void;
+  isGuidedMode?: boolean;
+}
+
+export const HashLab: React.FC<HashLabProps> = ({
+  onNavigateNext,
+  isGuidedMode = true,
+}) => {
   const [inputText, setInputText] = useState<string>('Hello, LedgerLab!');
   const [copied, setCopied] = useState(false);
   const [showAvalanche, setShowAvalanche] = useState(true);
@@ -61,6 +70,26 @@ export const HashLab: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* In-Lab Mission Guidance */}
+      {isGuidedMode && (
+        <MissionPanel
+          stageNumber="01"
+          stageTitle="Cryptographic Hashes"
+          mission="Discover why cryptographic hashes are the tamper-evident foundation of blockchain systems."
+          tryThis={[
+            'Type "Hello, world!" into the Input Data box below.',
+            'Observe the 64-character hexadecimal hash generated instantly.',
+            'Change just one character or punctuation mark (e.g., "!" to ".").',
+            'Observe how completely the output hash scrambles (the Avalanche Effect).',
+            'In the Avalanche Visualizer below, use "+Space" or "Flip 1 char" to see bit-level differences.',
+          ]}
+          observe="A tiny change in input produces a completely different 64-character fingerprint. The hash length never changes, regardless of input length."
+          whyItMatters="Hashes act as permanent digital fingerprints. Because even a 1-bit modification alters the entire hash, any tampering with blockchain data is immediately detectable."
+          nextText="See how this digital fingerprint is used to lock transactions into a single block."
+          nextLabel="Continue to Block Lab"
+          onNext={onNavigateNext}
+        />
+      )}
       {/* Top Banner / Philosophy */}
       <div
         style={{
