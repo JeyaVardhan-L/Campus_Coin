@@ -545,6 +545,51 @@ export const BlockchainLab: React.FC<BlockchainLabProps> = ({
           );
         })}
       </div>
+
+      {/* Bottom Guided Progression Action */}
+      {onNavigateNext && (
+        <div
+          className="card"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '14px',
+            background:
+              'linear-gradient(90deg, rgba(16, 185, 129, 0.08) 0%, rgba(15, 22, 35, 0.9) 100%)',
+            border: '1px solid var(--border-valid)',
+            padding: '18px 24px',
+          }}
+        >
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span className="badge badge-emerald">Chain Mastery Checkpoint</span>
+              <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff' }}>
+                You experienced cascading invalidation and historical re-mining!
+              </span>
+            </div>
+            <p
+              style={{
+                fontSize: '0.8125rem',
+                color: 'var(--text-secondary)',
+                marginTop: '4px',
+              }}
+            >
+              Next step: Test your mastery with the guided curriculum challenges and
+              conceptual puzzles.
+            </p>
+          </div>
+          <button
+            id="blockchain-next-btn"
+            onClick={onNavigateNext}
+            className="btn btn-primary"
+            style={{ padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600 }}
+          >
+            Complete Final Challenge <ArrowRight size={16} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
