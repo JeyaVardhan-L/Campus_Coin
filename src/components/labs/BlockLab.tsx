@@ -150,6 +150,7 @@ export const BlockLab: React.FC<BlockLabProps> = ({
       {/* In-Lab Mission Guidance */}
       {isGuidedMode && (
         <MissionPanel
+          id="mission-panel-block"
           stageNumber="02"
           stageTitle="Block Structure & Proof-of-Work"
           mission="Understand how a block packages data, parent history, and proof-of-work mining into a verifiable cryptographic unit."
@@ -212,7 +213,10 @@ export const BlockLab: React.FC<BlockLabProps> = ({
       </div>
 
       {/* Block Inspector Card */}
-      <div className={`card ${validation.isValid ? 'card-valid' : 'card-invalid'}`}>
+      <div
+        id="block-card"
+        className={`card ${validation.isValid ? 'card-valid' : 'card-invalid'}`}
+      >
         {/* Block Header Toolbar */}
         <div
           style={{
@@ -524,7 +528,7 @@ export const BlockLab: React.FC<BlockLabProps> = ({
               ) : (
                 <>
                   <strong style={{ color: 'var(--accent-rose)' }}>
-                    Hash Mismatch (Tampered):
+                    Tampered Payload:
                   </strong>{' '}
                   {validation.error} Click <strong>Mine Block</strong> to find a valid
                   Proof-of-Work nonce, or <strong>Recalculate Hash</strong> to update the

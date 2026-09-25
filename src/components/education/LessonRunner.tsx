@@ -456,6 +456,7 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
 
         {/* Completion Checkpoint Card */}
         <div
+          id="graduation-challenge-card"
           className="card"
           style={{
             background:
@@ -473,7 +474,7 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span className="badge badge-emerald">Curriculum Checkpoint</span>
               <span style={{ fontSize: '1rem', fontWeight: 700, color: '#fff' }}>
-                Foundation Learning Path Complete!
+                Learning Path Complete: Take the Conceptual Challenge
               </span>
             </div>
             <p

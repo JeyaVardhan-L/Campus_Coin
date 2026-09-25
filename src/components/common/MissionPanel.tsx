@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 
 export interface MissionPanelProps {
+  id?: string;
   stageNumber: string | number;
   stageTitle: string;
   mission: string;
@@ -23,6 +24,7 @@ export interface MissionPanelProps {
 }
 
 export const MissionPanel: React.FC<MissionPanelProps> = ({
+  id,
   stageNumber,
   stageTitle,
   mission,
@@ -38,6 +40,7 @@ export const MissionPanel: React.FC<MissionPanelProps> = ({
 
   return (
     <div
+      id={id}
       className="card"
       style={{
         border: '1px solid var(--border-accent)',

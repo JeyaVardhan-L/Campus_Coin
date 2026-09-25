@@ -93,11 +93,11 @@ export default function App() {
                 >
                   {isGuidedMode ? (
                     <>
-                      <Sparkles size={11} /> Guided Mode
+                      <Sparkles size={11} /> Guided Journey
                     </>
                   ) : (
                     <>
-                      <Compass size={11} /> Sandbox Mode
+                      <Compass size={11} /> Free Sandbox
                     </>
                   )}
                 </button>

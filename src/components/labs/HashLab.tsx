@@ -73,6 +73,7 @@ export const HashLab: React.FC<HashLabProps> = ({
       {/* In-Lab Mission Guidance */}
       {isGuidedMode && (
         <MissionPanel
+          id="mission-panel-hash"
           stageNumber="01"
           stageTitle="Cryptographic Hashes"
           mission="Discover why cryptographic hashes are the tamper-evident foundation of blockchain systems."

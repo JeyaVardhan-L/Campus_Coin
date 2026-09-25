@@ -98,6 +98,7 @@ export const BlockchainLab: React.FC<BlockchainLabProps> = ({
       {/* In-Lab Mission Guidance */}
       {isGuidedMode && (
         <MissionPanel
+          id="mission-panel-blockchain"
           stageNumber="03"
           stageTitle="The Blockchain & Cascading Invalidation"
           mission="Witness cascading invalidation and discover why changing historical data breaks the entire chain."
