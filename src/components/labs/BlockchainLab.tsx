@@ -320,8 +320,13 @@ export const BlockchainLab: React.FC<BlockchainLabProps> = ({
                           ? 'var(--accent-cyan)'
                           : 'var(--accent-rose)',
                       }}
+                      title={
+                        isGenesis
+                          ? 'Genesis Block: The initial foundation block of the chain. Has no predecessor (previous hash is all zeros).'
+                          : `Block #${block.index}`
+                      }
                     >
-                      Block #{block.index} {isGenesis && '(Genesis)'}
+                      Block #{block.index} {isGenesis && '(Genesis — First Block)'}
                     </span>
                     <span
                       className={`badge ${isCurrentValid ? 'badge-emerald' : 'badge-rose'}`}
@@ -384,8 +389,8 @@ export const BlockchainLab: React.FC<BlockchainLabProps> = ({
                           }}
                         >
                           {status?.isLinkValid
-                            ? '✓ Matches Parent Hash'
-                            : '✗ Broken Link to Parent'}
+                            ? '✓ Matches Parent Hash (Link Intact)'
+                            : '✗ Severed Parent Link (Hash Mismatch)'}
                         </span>
                       )}
                     </div>
@@ -412,8 +417,9 @@ export const BlockchainLab: React.FC<BlockchainLabProps> = ({
                       </label>
                       <span
                         style={{ fontSize: '0.6875rem', color: 'var(--accent-cyan)' }}
+                        title="Editing this data alters this block's hash and severs the cryptographic link to subsequent blocks"
                       >
-                        Editable
+                        Click to Tamper
                       </span>
                     </div>
                     <textarea

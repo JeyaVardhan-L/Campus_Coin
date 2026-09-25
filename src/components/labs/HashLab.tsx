@@ -105,9 +105,10 @@ export const HashLab: React.FC<HashLabProps> = ({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span className="badge badge-cyan">Real Cryptography</span>
+          <span className="badge badge-cyan">Cryptographic Standard</span>
           <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
-            Operating with standard FIPS 180-4 SHA-256 directly in your browser.
+            Operating with standard SHA-256 (FIPS 180-4) — the cryptographic algorithm
+            that powers Bitcoin and modern network security.
           </span>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
@@ -243,6 +244,7 @@ export const HashLab: React.FC<HashLabProps> = ({
             style={{
               display: 'flex',
               gap: '16px',
+              flexWrap: 'wrap',
               marginTop: '10px',
               fontSize: '0.75rem',
               color: 'var(--text-muted)',
@@ -250,8 +252,12 @@ export const HashLab: React.FC<HashLabProps> = ({
             }}
           >
             <span>Length: 64 hex characters (256 bits)</span>
-            <span>Deterministic: Yes</span>
-            <span>Reversible: Infeasible (Pre-image resistant)</span>
+            <span title="Deterministic: Identical input text will always produce the exact same 64-character hash">
+              Deterministic: Yes (Same input = same output)
+            </span>
+            <span title="Pre-image resistant: A one-way function where it is computationally infeasible to reverse-engineer the original text from the hash">
+              Reversible: No (Pre-image resistant one-way hash)
+            </span>
           </div>
         </div>
       </div>
@@ -435,8 +441,11 @@ export const HashLab: React.FC<HashLabProps> = ({
               </div>
 
               <div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                  Hamming Distance
+                <div
+                  style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}
+                  title="Hamming Distance: The total number of differing bit positions between the two hashes."
+                >
+                  Differing Bits (Hamming Distance)
                 </div>
                 <div
                   style={{

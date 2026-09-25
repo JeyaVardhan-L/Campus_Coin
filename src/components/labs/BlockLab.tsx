@@ -189,8 +189,11 @@ export const BlockLab: React.FC<BlockLabProps> = ({
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
-            Difficulty:
+          <span
+            style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}
+            title="Proof-of-Work Difficulty: How many leading zeros the block hash must start with. Each extra zero multiplies the search effort by 16."
+          >
+            Proof-of-Work Target:
           </span>
           <div style={{ display: 'flex', gap: '4px' }}>
             {[1, 2, 3, 4].map((d) => (
@@ -199,6 +202,7 @@ export const BlockLab: React.FC<BlockLabProps> = ({
                 onClick={() => setDifficulty(d)}
                 className={`btn ${difficulty === d ? 'btn-primary' : 'btn-secondary'}`}
                 style={{ padding: '2px 8px', fontSize: '0.75rem' }}
+                title={`Requires hash starting with ${'0'.repeat(d)} (${d} zero${d === 1 ? '' : 's'})`}
               >
                 {d} {d === 1 ? 'zero' : 'zeros'}
               </button>
@@ -272,13 +276,14 @@ export const BlockLab: React.FC<BlockLabProps> = ({
               </button>
             )}
             <button
+              id="recalculate-hash-btn"
               onClick={handleSyncHash}
               disabled={isMining}
               className="btn btn-secondary"
               style={{ fontSize: '0.8125rem', padding: '6px 12px' }}
-              title="Set stored hash to current computed hash without finding proof of work"
+              title="Recalculating the hash updates the recorded hash to match current contents, but does NOT perform proof-of-work (block remains invalid if difficulty is not met)."
             >
-              Update Hash
+              Recalculate Hash (Bypass Mining)
             </button>
           </div>
         </div>
@@ -296,6 +301,9 @@ export const BlockLab: React.FC<BlockLabProps> = ({
             <label className="input-label" htmlFor="block-index">
               Block Index / Height
             </label>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+              Sequential position in the chain (Block #0 is Genesis).
+            </span>
             <input
               id="block-index"
               type="number"
@@ -309,6 +317,9 @@ export const BlockLab: React.FC<BlockLabProps> = ({
             <label className="input-label" htmlFor="block-timestamp">
               Timestamp (Unix ms)
             </label>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+              Creation time in milliseconds, ordering blocks chronologically.
+            </span>
             <input
               id="block-timestamp"
               type="number"
@@ -322,6 +333,9 @@ export const BlockLab: React.FC<BlockLabProps> = ({
             <label className="input-label" htmlFor="block-nonce">
               Nonce (Number Used Once)
             </label>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+              The counter miners adjust to find a valid Proof-of-Work hash.
+            </span>
             <div style={{ display: 'flex', gap: '6px' }}>
               <input
                 id="block-nonce"
@@ -334,6 +348,7 @@ export const BlockLab: React.FC<BlockLabProps> = ({
                 onClick={() => setNonce((n) => n + 1)}
                 className="btn btn-secondary"
                 style={{ padding: '0 10px', fontSize: '0.875rem' }}
+                title="Increment nonce manually by 1"
               >
                 +1
               </button>
@@ -345,6 +360,10 @@ export const BlockLab: React.FC<BlockLabProps> = ({
           <label className="input-label" htmlFor="block-previous-hash">
             Previous Block Hash (Parent Link)
           </label>
+          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+            Cryptographic fingerprint of the preceding block, forming the tamper-evident
+            chain link.
+          </span>
           <input
             id="block-previous-hash"
             type="text"
@@ -358,6 +377,9 @@ export const BlockLab: React.FC<BlockLabProps> = ({
           <label className="input-label" htmlFor="block-data">
             Block Payload / Transaction Data (Editable)
           </label>
+          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+            Transaction records or data stored within this block.
+          </span>
           <textarea
             id="block-data"
             value={data}
@@ -487,15 +509,26 @@ export const BlockLab: React.FC<BlockLabProps> = ({
                     Block is valid:
                   </strong>{' '}
                   The stored hash matches the computed hash of the contents, and satisfies
-                  the required difficulty ({difficulty} leading zeros).
+                  the required difficulty ({difficulty} leading zero
+                  {difficulty === 1 ? '' : 's'}).
+                </>
+              ) : storedHash === computedHash ? (
+                <>
+                  <strong style={{ color: 'var(--accent-rose)' }}>
+                    Proof-of-Work Required:
+                  </strong>{' '}
+                  The hash matches the block data, but does not satisfy the difficulty
+                  target ({difficulty} leading zero{difficulty === 1 ? '' : 's'}). Click{' '}
+                  <strong>Mine Block</strong> to search for a valid Nonce!
                 </>
               ) : (
                 <>
                   <strong style={{ color: 'var(--accent-rose)' }}>
-                    Block is invalid:
+                    Hash Mismatch (Tampered):
                   </strong>{' '}
-                  {validation.error} Click <strong>Mine Block</strong> to search for a
-                  nonce that satisfies the target difficulty.
+                  {validation.error} Click <strong>Mine Block</strong> to find a valid
+                  Proof-of-Work nonce, or <strong>Recalculate Hash</strong> to update the
+                  stored hash without mining.
                 </>
               )}
             </span>
