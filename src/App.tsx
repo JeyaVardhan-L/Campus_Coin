@@ -3,11 +3,26 @@ import { HashLab } from './components/labs/HashLab';
 import { BlockLab } from './components/labs/BlockLab';
 import { BlockchainLab } from './components/labs/BlockchainLab';
 import { LessonRunner } from './components/education/LessonRunner';
+import { OnboardingHero } from './components/common/OnboardingHero';
+import { Compass, Sparkles } from 'lucide-react';
 
 export type LabTab = 'hash' | 'block' | 'blockchain' | 'lessons';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<LabTab>('hash');
+  const [isGuidedMode, setIsGuidedMode] = useState<boolean>(true);
+  const [showHero, setShowHero] = useState<boolean>(true);
+
+  const handleStartGuided = () => {
+    setIsGuidedMode(true);
+    setShowHero(true);
+    setActiveTab('hash');
+  };
+
+  const handleExploreSandboxes = () => {
+    setIsGuidedMode(false);
+    setShowHero(false);
+  };
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -30,6 +45,8 @@ export default function App() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -63,7 +80,27 @@ export default function App() {
                   LedgerLab
                 </span>
                 <span className="badge badge-cyan">v0.1.0-alpha</span>
-                <span className="badge badge-amber">Interactive Simulation</span>
+                <button
+                  id="mode-toggle-btn"
+                  onClick={() => {
+                    const nextMode = !isGuidedMode;
+                    setIsGuidedMode(nextMode);
+                    if (nextMode) setShowHero(true);
+                  }}
+                  className={`badge ${isGuidedMode ? 'badge-cyan' : 'badge-amber'}`}
+                  style={{ cursor: 'pointer', border: '1px solid currentColor' }}
+                  title="Click to toggle between Guided Journey and Free Sandbox modes"
+                >
+                  {isGuidedMode ? (
+                    <>
+                      <Sparkles size={11} /> Guided Mode
+                    </>
+                  ) : (
+                    <>
+                      <Compass size={11} /> Sandbox Mode
+                    </>
+                  )}
+                </button>
               </div>
               <p
                 style={{
@@ -77,22 +114,35 @@ export default function App() {
             </div>
           </div>
 
-          <nav style={{ display: 'flex', gap: '8px' }}>
-            {(['hash', 'block', 'blockchain', 'lessons'] as const).map((tab) => (
-              <button
-                key={tab}
-                id={`tab-${tab}`}
-                onClick={() => setActiveTab(tab)}
-                className={`btn ${activeTab === tab ? 'btn-primary' : 'btn-secondary'}`}
-                style={{
-                  fontSize: '0.8125rem',
-                  padding: '6px 14px',
-                  textTransform: 'capitalize',
-                }}
-              >
-                {tab === 'blockchain' ? 'Blockchain Lab' : `${tab} Lab`}
-              </button>
-            ))}
+          <nav style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            {(['hash', 'block', 'blockchain', 'lessons'] as const).map((tab) => {
+              const labels: Record<LabTab, string> = {
+                hash: '1. Hash Lab',
+                block: '2. Block Lab',
+                blockchain: '3. Blockchain Lab',
+                lessons: '4. Lessons & Challenges',
+              };
+              return (
+                <button
+                  key={tab}
+                  id={`tab-${tab}`}
+                  onClick={() => setActiveTab(tab)}
+                  className={`btn ${activeTab === tab ? 'btn-primary' : 'btn-secondary'}`}
+                  style={{
+                    fontSize: '0.8125rem',
+                    padding: '6px 14px',
+                  }}
+                >
+                  {isGuidedMode
+                    ? labels[tab]
+                    : tab === 'blockchain'
+                      ? 'Blockchain Lab'
+                      : tab === 'lessons'
+                        ? 'Lessons'
+                        : `${tab} Lab`}
+                </button>
+              );
+            })}
           </nav>
         </div>
       </header>
@@ -107,7 +157,20 @@ export default function App() {
           padding: '24px',
         }}
       >
-        <div style={{ padding: '40px 0', textAlign: 'center' }}>
+        {/* Onboarding Start Here Hero */}
+        {showHero && (
+          <OnboardingHero
+            isGuidedMode={isGuidedMode}
+            onStartGuided={handleStartGuided}
+            onExploreSandboxes={handleExploreSandboxes}
+            onNavigateTab={(tab) => {
+              setActiveTab(tab);
+              setIsGuidedMode(true);
+            }}
+          />
+        )}
+
+        <div style={{ padding: '24px 0 20px', textAlign: 'center' }}>
           <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '8px' }}>
             {activeTab === 'hash' && 'Cryptographic Hash Laboratory'}
             {activeTab === 'block' && 'Single Block Inspector & Mining'}
