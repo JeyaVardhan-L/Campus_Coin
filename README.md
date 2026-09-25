@@ -11,6 +11,30 @@ LedgerLab is an open-source, browser-based blockchain laboratory where you learn
 
 ---
 
+## First Time Here? Start Here
+
+> **No prior blockchain or cryptography knowledge is required.**
+> LedgerLab is designed for anyone with basic computer literacy who wants to understand how blockchains actually work under the hood.
+
+LedgerLab offers a structured, 4-stage guided laboratory journey:
+
+1. **Start the Guided Journey**  
+   Click **"Start Guided Journey"** on the home screen or use the mode switch in the top header. The laboratory will guide you with concrete, numbered missions right alongside the interactive experiments.
+2. **Cryptographic Hashes & The Avalanche Effect (Stage 01)**  
+   Type text into the Hash Lab. Observe how the 64-character SHA-256 fingerprint remains fixed in length, and how flipping a single letter completely scrambles the entire hash.
+3. **Block Structure & Proof-of-Work Mining (Stage 02)**  
+   Package data with a timestamp, index, and nonce into a single block. Deliberately tamper with the payload to see the block become invalid, then click **Mine Block** to watch your computer search for a valid nonce meeting the difficulty target.
+4. **The Blockchain & Cascading Invalidation (Stage 03)**  
+   Connect blocks in sequence where each block stores the previous block's hash. Tamper with historical Block #1 to witness cascading downstream invalidation as every subsequent block's parent link is severed.
+5. **Attack, Defense & Conceptual Challenge (Stage 04)**  
+   Re-mine the chain and discover why rewriting historical transactions requires re-mining every subsequent block—a feat that becomes mathematically and computationally intractable in a real distributed network. Complete the conceptual challenge in the Lessons tab to test your understanding.
+
+Prefer unrestricted exploration? Click **"Explore Free Sandboxes"** at any time to freely experiment across all laboratories.
+
+Need quick definitions of terms like Nonce, Difficulty, Target Prefix, or Cascading Invalidation? See our [Plain-English Glossary](./docs/glossary.md).
+
+---
+
 ## 1. What LedgerLab Is
 
 LedgerLab is an interactive technical workbench for demystifying blockchains through hands-on experimentation.
