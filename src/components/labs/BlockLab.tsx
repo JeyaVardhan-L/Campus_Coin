@@ -9,8 +9,17 @@ import {
   Cpu,
   XCircle,
 } from 'lucide-react';
+import { MissionPanel } from '../common/MissionPanel';
 
-export const BlockLab: React.FC = () => {
+export interface BlockLabProps {
+  onNavigateNext?: () => void;
+  isGuidedMode?: boolean;
+}
+
+export const BlockLab: React.FC<BlockLabProps> = ({
+  onNavigateNext,
+  isGuidedMode = true,
+}) => {
   const [index, setIndex] = useState<number>(1);
   const [timestamp, setTimestamp] = useState<number>(1700000000000);
   const [previousHash, setPreviousHash] = useState<string>(
@@ -137,6 +146,26 @@ export const BlockLab: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* In-Lab Mission Guidance */}
+      {isGuidedMode && (
+        <MissionPanel
+          stageNumber="02"
+          stageTitle="Block Structure & Proof-of-Work"
+          mission="Understand how a block packages data, parent history, and proof-of-work mining into a verifiable cryptographic unit."
+          tryThis={[
+            'Observe the currently valid block (emerald green border and badge).',
+            'Change the transaction text in "Block Payload / Transaction Data" (e.g., "Alice sent 500 tokens to Mallory").',
+            'Notice that the block immediately becomes invalid (card turns red).',
+            'Click the [ Mine Block ] button at the top right of the card.',
+            'Watch the computer search through Nonce numbers until it finds a hash starting with the required zeros.',
+          ]}
+          observe="Changing the payload changes the computed block hash. Mining repeatedly varies the Nonce until the hash satisfies the difficulty target (leading zeros)."
+          whyItMatters="A block cannot simply declare itself valid. Proof-of-Work requires computational effort (mining) to find a valid nonce, preventing spam and establishing consensus."
+          nextText="See what happens when multiple mined blocks are linked sequentially into a blockchain."
+          nextLabel="Continue to Blockchain Lab"
+          onNext={onNavigateNext}
+        />
+      )}
       {/* Top Banner */}
       <div
         style={{

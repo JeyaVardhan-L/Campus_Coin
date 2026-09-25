@@ -201,8 +201,18 @@ export default function App() {
             isGuidedMode={isGuidedMode}
           />
         )}
-        {activeTab === 'block' && <BlockLab />}
-        {activeTab === 'blockchain' && <BlockchainLab />}
+        {activeTab === 'block' && (
+          <BlockLab
+            onNavigateNext={() => setActiveTab('blockchain')}
+            isGuidedMode={isGuidedMode}
+          />
+        )}
+        {activeTab === 'blockchain' && (
+          <BlockchainLab
+            onNavigateNext={() => setActiveTab('lessons')}
+            isGuidedMode={isGuidedMode}
+          />
+        )}
         {activeTab === 'lessons' && <LessonRunner onNavigateTab={setActiveTab} />}
       </main>
 

@@ -20,8 +20,17 @@ import {
   ArrowRight,
   Info,
 } from 'lucide-react';
+import { MissionPanel } from '../common/MissionPanel';
 
-export const BlockchainLab: React.FC = () => {
+export interface BlockchainLabProps {
+  onNavigateNext?: () => void;
+  isGuidedMode?: boolean;
+}
+
+export const BlockchainLab: React.FC<BlockchainLabProps> = ({
+  onNavigateNext,
+  isGuidedMode = true,
+}) => {
   const [chain, setChain] = useState<Block[]>(() => createDefaultChain(4, 2));
   const [isRepairing, setIsRepairing] = useState<boolean>(false);
 
@@ -86,6 +95,26 @@ export const BlockchainLab: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* In-Lab Mission Guidance */}
+      {isGuidedMode && (
+        <MissionPanel
+          stageNumber="03"
+          stageTitle="The Blockchain & Cascading Invalidation"
+          mission="Witness cascading invalidation and discover why changing historical data breaks the entire chain."
+          tryThis={[
+            'Inspect the links between blocks. Notice that Block #1 Previous Hash matches Block #0 Hash.',
+            'Tamper with history: In Block #1, modify the data payload (e.g. edit the text).',
+            'Watch Blocks #1, #2, #3, and #4 immediately become invalid (red cards and broken link arrows).',
+            "Inspect the red arrows: Block #2 still expects Block #1's original hash, breaking the cryptographic link!",
+            'Click the [ Re-mine From Block #1 ] button in the toolbar to repair the chain.',
+          ]}
+          observe="Modifying historical Block #1 altered its hash. Block #2 still pointed to the old hash, severing the link. This caused every subsequent block in the chain to fail consensus."
+          whyItMatters="Blockchain integrity comes from chaining blocks together mathematically. In a distributed network, an attacker cannot rewrite past history without re-mining every subsequent block while competing against the honest network."
+          nextText="Consolidate what you've learned and tackle the conceptual challenges in the curriculum."
+          nextLabel="Complete Final Challenge"
+          onNext={onNavigateNext}
+        />
+      )}
       {/* Chain Status & Global Toolbar */}
       <div
         style={{
