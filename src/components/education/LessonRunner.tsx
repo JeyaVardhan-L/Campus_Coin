@@ -453,6 +453,59 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({ onNavigateTab }) => 
             </div>
           )}
         </div>
+
+        {/* Completion Checkpoint Card */}
+        <div
+          id="graduation-challenge-card"
+          className="card"
+          style={{
+            background:
+              'linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, rgba(16, 185, 129, 0.08) 100%)',
+            border: '1px solid var(--border-valid)',
+            padding: '20px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '16px',
+          }}
+        >
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span className="badge badge-emerald">Curriculum Checkpoint</span>
+              <span style={{ fontSize: '1rem', fontWeight: 700, color: '#fff' }}>
+                Learning Path Complete: Take the Conceptual Challenge
+              </span>
+            </div>
+            <p
+              style={{
+                fontSize: '0.8125rem',
+                color: 'var(--text-secondary)',
+                marginTop: '4px',
+              }}
+            >
+              You have explored cryptographic hashes, block mining, and cascading
+              blockchain invalidation. You can now freely experiment across all
+              laboratories in sandbox mode.
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => onNavigateTab('hash')}
+              className="btn btn-secondary"
+              style={{ fontSize: '0.8125rem' }}
+            >
+              Restart from Hashes
+            </button>
+            <button
+              onClick={() => onNavigateTab('blockchain')}
+              className="btn btn-primary"
+              style={{ fontSize: '0.8125rem' }}
+            >
+              Explore Blockchain Sandbox <ArrowUpRight size={14} />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { sha256Sync, hexToBinary } from '../../crypto/sha256';
 import { calculateAvalanche, AvalancheResult } from '../../crypto/avalanche';
-import { Copy, Check, Sparkles, ArrowRightLeft, Binary } from 'lucide-react';
+import { Copy, Check, Sparkles, ArrowRightLeft, Binary, ArrowRight } from 'lucide-react';
+import { MissionPanel } from '../common/MissionPanel';
 
 const PRESETS = [
   {
@@ -13,7 +14,15 @@ const PRESETS = [
   { label: 'Single Letter B', text: 'B' },
 ];
 
-export const HashLab: React.FC = () => {
+export interface HashLabProps {
+  onNavigateNext?: () => void;
+  isGuidedMode?: boolean;
+}
+
+export const HashLab: React.FC<HashLabProps> = ({
+  onNavigateNext,
+  isGuidedMode = true,
+}) => {
   const [inputText, setInputText] = useState<string>('Hello, LedgerLab!');
   const [copied, setCopied] = useState(false);
   const [showAvalanche, setShowAvalanche] = useState(true);
@@ -61,6 +70,27 @@ export const HashLab: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* In-Lab Mission Guidance */}
+      {isGuidedMode && (
+        <MissionPanel
+          id="mission-panel-hash"
+          stageNumber="01"
+          stageTitle="Cryptographic Hashes"
+          mission="Discover why cryptographic hashes are the tamper-evident foundation of blockchain systems."
+          tryThis={[
+            'Type "Hello, world!" into the Input Data box below.',
+            'Observe the 64-character hexadecimal hash generated instantly.',
+            'Change just one character or punctuation mark (e.g., "!" to ".").',
+            'Observe how completely the output hash scrambles (the Avalanche Effect).',
+            'In the Avalanche Visualizer below, use "+Space" or "Flip 1 char" to see bit-level differences.',
+          ]}
+          observe="A tiny change in input produces a completely different 64-character fingerprint. The hash length never changes, regardless of input length."
+          whyItMatters="Hashes act as permanent digital fingerprints. Because even a 1-bit modification alters the entire hash, any tampering with blockchain data is immediately detectable."
+          nextText="See how this digital fingerprint is used to lock transactions into a single block."
+          nextLabel="Continue to Block Lab"
+          onNext={onNavigateNext}
+        />
+      )}
       {/* Top Banner / Philosophy */}
       <div
         style={{
@@ -76,9 +106,10 @@ export const HashLab: React.FC = () => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span className="badge badge-cyan">Real Cryptography</span>
+          <span className="badge badge-cyan">Cryptographic Standard</span>
           <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
-            Operating with standard FIPS 180-4 SHA-256 directly in your browser.
+            Operating with standard SHA-256 (FIPS 180-4) — the cryptographic algorithm
+            that powers Bitcoin and modern network security.
           </span>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
@@ -214,6 +245,7 @@ export const HashLab: React.FC = () => {
             style={{
               display: 'flex',
               gap: '16px',
+              flexWrap: 'wrap',
               marginTop: '10px',
               fontSize: '0.75rem',
               color: 'var(--text-muted)',
@@ -221,8 +253,12 @@ export const HashLab: React.FC = () => {
             }}
           >
             <span>Length: 64 hex characters (256 bits)</span>
-            <span>Deterministic: Yes</span>
-            <span>Reversible: Infeasible (Pre-image resistant)</span>
+            <span title="Deterministic: Identical input text will always produce the exact same 64-character hash">
+              Deterministic: Yes (Same input = same output)
+            </span>
+            <span title="Pre-image resistant: A one-way function where it is computationally infeasible to reverse-engineer the original text from the hash">
+              Reversible: No (Pre-image resistant one-way hash)
+            </span>
           </div>
         </div>
       </div>
@@ -406,8 +442,11 @@ export const HashLab: React.FC = () => {
               </div>
 
               <div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                  Hamming Distance
+                <div
+                  style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}
+                  title="Hamming Distance: The total number of differing bit positions between the two hashes."
+                >
+                  Differing Bits (Hamming Distance)
                 </div>
                 <div
                   style={{
@@ -514,6 +553,51 @@ export const HashLab: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Bottom Guided Progression Action */}
+      {onNavigateNext && (
+        <div
+          className="card"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '14px',
+            background:
+              'linear-gradient(90deg, rgba(0, 240, 255, 0.08) 0%, rgba(15, 22, 35, 0.9) 100%)',
+            border: '1px solid var(--border-accent)',
+            padding: '18px 24px',
+          }}
+        >
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span className="badge badge-cyan">Checkpoint Reached</span>
+              <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff' }}>
+                You understand how cryptographic hashes and the avalanche effect work!
+              </span>
+            </div>
+            <p
+              style={{
+                fontSize: '0.8125rem',
+                color: 'var(--text-secondary)',
+                marginTop: '4px',
+              }}
+            >
+              Next step: See how transactions, timestamps, and proof-of-work are assembled
+              into a single block.
+            </p>
+          </div>
+          <button
+            id="hash-next-btn"
+            onClick={onNavigateNext}
+            className="btn btn-primary"
+            style={{ padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600 }}
+          >
+            Next: Build a Block <ArrowRight size={16} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

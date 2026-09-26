@@ -13,8 +13,9 @@ export const hashingLesson: Lesson = {
   steps: [
     {
       id: 'step-1',
-      title: 'Enter arbitrary text',
-      instruction: 'Type any message or phrase into the input field.',
+      title: 'Enter arbitrary text in Hash Lab',
+      instruction:
+        'Navigate to the Hash Lab tab (or click "Open Hash Lab" on the left) and type any message or phrase into the input field.',
       explanation:
         'Notice how quickly the hash is computed. Whether your input is 1 letter or 10,000 words, SHA-256 always outputs exactly 64 hexadecimal characters (256 bits).',
       hint: 'Try words like "Hello, world!" or "Genesis block payload".',
@@ -22,7 +23,8 @@ export const hashingLesson: Lesson = {
     {
       id: 'step-2',
       title: 'Change a single character',
-      instruction: 'Modify just one letter or punctuation mark in the input data.',
+      instruction:
+        'In Hash Lab, modify just one letter or punctuation mark in the input data.',
       explanation:
         'Observe how completely the output changes. The new hash bears no visual or mathematical resemblance to the previous one.',
       hint: 'Change an uppercase letter to lowercase or append an exclamation mark.',
@@ -31,7 +33,7 @@ export const hashingLesson: Lesson = {
       id: 'step-3',
       title: 'Examine the 256-bit Avalanche Visualizer',
       instruction:
-        'Look at the difference matrix in the Avalanche Laboratory. Count how many of the 256 bits flipped.',
+        'In Hash Lab, look at the difference matrix in the Avalanche Visualizer. Count how many of the 256 bits flipped.',
       explanation:
         'In a secure cryptographic hash function, changing just 1 bit in the input flips roughly 50% of the output bits (~128 bits). This ensures small tampering creates massive, unmistakable differences.',
       hint: 'Notice that identical inputs always yield the exact same hash (determinism).',

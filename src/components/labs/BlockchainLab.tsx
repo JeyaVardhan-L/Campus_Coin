@@ -20,8 +20,17 @@ import {
   ArrowRight,
   Info,
 } from 'lucide-react';
+import { MissionPanel } from '../common/MissionPanel';
 
-export const BlockchainLab: React.FC = () => {
+export interface BlockchainLabProps {
+  onNavigateNext?: () => void;
+  isGuidedMode?: boolean;
+}
+
+export const BlockchainLab: React.FC<BlockchainLabProps> = ({
+  onNavigateNext,
+  isGuidedMode = true,
+}) => {
   const [chain, setChain] = useState<Block[]>(() => createDefaultChain(4, 2));
   const [isRepairing, setIsRepairing] = useState<boolean>(false);
 
@@ -86,6 +95,27 @@ export const BlockchainLab: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* In-Lab Mission Guidance */}
+      {isGuidedMode && (
+        <MissionPanel
+          id="mission-panel-blockchain"
+          stageNumber="03"
+          stageTitle="The Blockchain & Cascading Invalidation"
+          mission="Witness cascading invalidation and discover why changing historical data breaks the entire chain."
+          tryThis={[
+            'Inspect the links between blocks. Notice that Block #1 Previous Hash matches Block #0 Hash.',
+            'Tamper with history: In Block #1, modify the data payload (e.g. edit the text).',
+            'Watch Blocks #1, #2, #3, and #4 immediately become invalid (red cards and broken link arrows).',
+            "Inspect the red arrows: Block #2 still expects Block #1's original hash, breaking the cryptographic link!",
+            'Click the [ Re-mine From Block #1 ] button in the toolbar to repair the chain.',
+          ]}
+          observe="Modifying historical Block #1 altered its hash. Block #2 still pointed to the old hash, severing the link. This caused every subsequent block in the chain to fail consensus."
+          whyItMatters="Blockchain integrity comes from chaining blocks together mathematically. In a distributed network, an attacker cannot rewrite past history without re-mining every subsequent block while competing against the honest network."
+          nextText="Consolidate what you've learned and tackle the conceptual challenges in the curriculum."
+          nextLabel="Complete Final Challenge"
+          onNext={onNavigateNext}
+        />
+      )}
       {/* Chain Status & Global Toolbar */}
       <div
         style={{
@@ -291,8 +321,13 @@ export const BlockchainLab: React.FC = () => {
                           ? 'var(--accent-cyan)'
                           : 'var(--accent-rose)',
                       }}
+                      title={
+                        isGenesis
+                          ? 'Genesis Block: The initial foundation block of the chain. Has no predecessor (previous hash is all zeros).'
+                          : `Block #${block.index}`
+                      }
                     >
-                      Block #{block.index} {isGenesis && '(Genesis)'}
+                      Block #{block.index} {isGenesis && '(Genesis — First Block)'}
                     </span>
                     <span
                       className={`badge ${isCurrentValid ? 'badge-emerald' : 'badge-rose'}`}
@@ -355,8 +390,8 @@ export const BlockchainLab: React.FC = () => {
                           }}
                         >
                           {status?.isLinkValid
-                            ? '✓ Matches Parent Hash'
-                            : '✗ Broken Link to Parent'}
+                            ? '✓ Matches Parent Hash (Link Intact)'
+                            : '✗ Severed Parent Link (Hash Mismatch)'}
                         </span>
                       )}
                     </div>
@@ -383,8 +418,9 @@ export const BlockchainLab: React.FC = () => {
                       </label>
                       <span
                         style={{ fontSize: '0.6875rem', color: 'var(--accent-cyan)' }}
+                        title="Editing this data alters this block's hash and severs the cryptographic link to subsequent blocks"
                       >
-                        Editable
+                        Click to Tamper
                       </span>
                     </div>
                     <textarea
@@ -516,6 +552,51 @@ export const BlockchainLab: React.FC = () => {
           );
         })}
       </div>
+
+      {/* Bottom Guided Progression Action */}
+      {onNavigateNext && (
+        <div
+          className="card"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '14px',
+            background:
+              'linear-gradient(90deg, rgba(16, 185, 129, 0.08) 0%, rgba(15, 22, 35, 0.9) 100%)',
+            border: '1px solid var(--border-valid)',
+            padding: '18px 24px',
+          }}
+        >
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span className="badge badge-emerald">Chain Mastery Checkpoint</span>
+              <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff' }}>
+                You experienced cascading invalidation and historical re-mining!
+              </span>
+            </div>
+            <p
+              style={{
+                fontSize: '0.8125rem',
+                color: 'var(--text-secondary)',
+                marginTop: '4px',
+              }}
+            >
+              Next step: Test your mastery with the guided curriculum challenges and
+              conceptual puzzles.
+            </p>
+          </div>
+          <button
+            id="blockchain-next-btn"
+            onClick={onNavigateNext}
+            className="btn btn-primary"
+            style={{ padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600 }}
+          >
+            Complete Final Challenge <ArrowRight size={16} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

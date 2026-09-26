@@ -8,9 +8,19 @@ import {
   RefreshCw,
   Cpu,
   XCircle,
+  ArrowRight,
 } from 'lucide-react';
+import { MissionPanel } from '../common/MissionPanel';
 
-export const BlockLab: React.FC = () => {
+export interface BlockLabProps {
+  onNavigateNext?: () => void;
+  isGuidedMode?: boolean;
+}
+
+export const BlockLab: React.FC<BlockLabProps> = ({
+  onNavigateNext,
+  isGuidedMode = true,
+}) => {
   const [index, setIndex] = useState<number>(1);
   const [timestamp, setTimestamp] = useState<number>(1700000000000);
   const [previousHash, setPreviousHash] = useState<string>(
@@ -137,6 +147,27 @@ export const BlockLab: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* In-Lab Mission Guidance */}
+      {isGuidedMode && (
+        <MissionPanel
+          id="mission-panel-block"
+          stageNumber="02"
+          stageTitle="Block Structure & Proof-of-Work"
+          mission="Understand how a block packages data, parent history, and proof-of-work mining into a verifiable cryptographic unit."
+          tryThis={[
+            'Observe the currently valid block (emerald green border and badge).',
+            'Change the transaction text in "Block Payload / Transaction Data" (e.g., "Alice sent 500 tokens to Mallory").',
+            'Notice that the block immediately becomes invalid (card turns red).',
+            'Click the [ Mine Block ] button at the top right of the card.',
+            'Watch the computer search through Nonce numbers until it finds a hash starting with the required zeros.',
+          ]}
+          observe="Changing the payload changes the computed block hash. Mining repeatedly varies the Nonce until the hash satisfies the difficulty target (leading zeros)."
+          whyItMatters="A block cannot simply declare itself valid. Proof-of-Work requires computational effort (mining) to find a valid nonce, preventing spam and establishing consensus."
+          nextText="See what happens when multiple mined blocks are linked sequentially into a blockchain."
+          nextLabel="Continue to Blockchain Lab"
+          onNext={onNavigateNext}
+        />
+      )}
       {/* Top Banner */}
       <div
         style={{
@@ -159,8 +190,11 @@ export const BlockLab: React.FC = () => {
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
-            Difficulty:
+          <span
+            style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}
+            title="Proof-of-Work Difficulty: How many leading zeros the block hash must start with. Each extra zero multiplies the search effort by 16."
+          >
+            Proof-of-Work Target:
           </span>
           <div style={{ display: 'flex', gap: '4px' }}>
             {[1, 2, 3, 4].map((d) => (
@@ -169,6 +203,7 @@ export const BlockLab: React.FC = () => {
                 onClick={() => setDifficulty(d)}
                 className={`btn ${difficulty === d ? 'btn-primary' : 'btn-secondary'}`}
                 style={{ padding: '2px 8px', fontSize: '0.75rem' }}
+                title={`Requires hash starting with ${'0'.repeat(d)} (${d} zero${d === 1 ? '' : 's'})`}
               >
                 {d} {d === 1 ? 'zero' : 'zeros'}
               </button>
@@ -178,7 +213,10 @@ export const BlockLab: React.FC = () => {
       </div>
 
       {/* Block Inspector Card */}
-      <div className={`card ${validation.isValid ? 'card-valid' : 'card-invalid'}`}>
+      <div
+        id="block-card"
+        className={`card ${validation.isValid ? 'card-valid' : 'card-invalid'}`}
+      >
         {/* Block Header Toolbar */}
         <div
           style={{
@@ -242,13 +280,14 @@ export const BlockLab: React.FC = () => {
               </button>
             )}
             <button
+              id="recalculate-hash-btn"
               onClick={handleSyncHash}
               disabled={isMining}
               className="btn btn-secondary"
               style={{ fontSize: '0.8125rem', padding: '6px 12px' }}
-              title="Set stored hash to current computed hash without finding proof of work"
+              title="Recalculating the hash updates the recorded hash to match current contents, but does NOT perform proof-of-work (block remains invalid if difficulty is not met)."
             >
-              Update Hash
+              Recalculate Hash (Bypass Mining)
             </button>
           </div>
         </div>
@@ -266,6 +305,9 @@ export const BlockLab: React.FC = () => {
             <label className="input-label" htmlFor="block-index">
               Block Index / Height
             </label>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+              Sequential position in the chain (Block #0 is Genesis).
+            </span>
             <input
               id="block-index"
               type="number"
@@ -279,6 +321,9 @@ export const BlockLab: React.FC = () => {
             <label className="input-label" htmlFor="block-timestamp">
               Timestamp (Unix ms)
             </label>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+              Creation time in milliseconds, ordering blocks chronologically.
+            </span>
             <input
               id="block-timestamp"
               type="number"
@@ -292,6 +337,9 @@ export const BlockLab: React.FC = () => {
             <label className="input-label" htmlFor="block-nonce">
               Nonce (Number Used Once)
             </label>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+              The counter miners adjust to find a valid Proof-of-Work hash.
+            </span>
             <div style={{ display: 'flex', gap: '6px' }}>
               <input
                 id="block-nonce"
@@ -304,6 +352,7 @@ export const BlockLab: React.FC = () => {
                 onClick={() => setNonce((n) => n + 1)}
                 className="btn btn-secondary"
                 style={{ padding: '0 10px', fontSize: '0.875rem' }}
+                title="Increment nonce manually by 1"
               >
                 +1
               </button>
@@ -315,6 +364,10 @@ export const BlockLab: React.FC = () => {
           <label className="input-label" htmlFor="block-previous-hash">
             Previous Block Hash (Parent Link)
           </label>
+          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+            Cryptographic fingerprint of the preceding block, forming the tamper-evident
+            chain link.
+          </span>
           <input
             id="block-previous-hash"
             type="text"
@@ -328,6 +381,9 @@ export const BlockLab: React.FC = () => {
           <label className="input-label" htmlFor="block-data">
             Block Payload / Transaction Data (Editable)
           </label>
+          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+            Transaction records or data stored within this block.
+          </span>
           <textarea
             id="block-data"
             value={data}
@@ -457,21 +513,77 @@ export const BlockLab: React.FC = () => {
                     Block is valid:
                   </strong>{' '}
                   The stored hash matches the computed hash of the contents, and satisfies
-                  the required difficulty ({difficulty} leading zeros).
+                  the required difficulty ({difficulty} leading zero
+                  {difficulty === 1 ? '' : 's'}).
+                </>
+              ) : storedHash === computedHash ? (
+                <>
+                  <strong style={{ color: 'var(--accent-rose)' }}>
+                    Proof-of-Work Required:
+                  </strong>{' '}
+                  The hash matches the block data, but does not satisfy the difficulty
+                  target ({difficulty} leading zero{difficulty === 1 ? '' : 's'}). Click{' '}
+                  <strong>Mine Block</strong> to search for a valid Nonce!
                 </>
               ) : (
                 <>
                   <strong style={{ color: 'var(--accent-rose)' }}>
-                    Block is invalid:
+                    Tampered Payload:
                   </strong>{' '}
-                  {validation.error} Click <strong>Mine Block</strong> to search for a
-                  nonce that satisfies the target difficulty.
+                  {validation.error} Click <strong>Mine Block</strong> to find a valid
+                  Proof-of-Work nonce, or <strong>Recalculate Hash</strong> to update the
+                  stored hash without mining.
                 </>
               )}
             </span>
           </div>
         </div>
       </div>
+
+      {/* Bottom Guided Progression Action */}
+      {onNavigateNext && (
+        <div
+          className="card"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '14px',
+            background:
+              'linear-gradient(90deg, rgba(0, 240, 255, 0.08) 0%, rgba(15, 22, 35, 0.9) 100%)',
+            border: '1px solid var(--border-accent)',
+            padding: '18px 24px',
+          }}
+        >
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span className="badge badge-cyan">Checkpoint Reached</span>
+              <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff' }}>
+                You understand block headers and Proof-of-Work mining!
+              </span>
+            </div>
+            <p
+              style={{
+                fontSize: '0.8125rem',
+                color: 'var(--text-secondary)',
+                marginTop: '4px',
+              }}
+            >
+              Next step: Connect multiple blocks together and witness how tampering breaks
+              the entire chain.
+            </p>
+          </div>
+          <button
+            id="block-next-btn"
+            onClick={onNavigateNext}
+            className="btn btn-primary"
+            style={{ padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600 }}
+          >
+            Next: Link the Blockchain <ArrowRight size={16} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
